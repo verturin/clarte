@@ -1,0 +1,5 @@
+{
+	"stable": {
+		"1.4": { "current": "1.4.1", "announcement": "https://github.com/verturin/clarte/releases", "eol": null, "security": false }
+	}
+}
