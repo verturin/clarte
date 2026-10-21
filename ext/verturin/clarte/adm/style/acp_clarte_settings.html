@@ -1,0 +1,283 @@
+{% include 'overall_header.html' %}
+
+{% INCLUDECSS '@verturin_clarte/acp_clarte.css' %}
+
+{% if S_MODEL_EDIT %}
+<a href="{{ U_CLARTE_MODELS }}" class="clarte-back">&laquo; {{ lang('ACP_CLARTE_BACK_MODELS') }}</a>
+<h1>{{ lang('ACP_CLARTE_MODEL_EDIT') }}</h1>
+<p>{{ lang('ACP_CLARTE_MODEL_EDIT_EXPLAIN') }}</p>
+{% else %}
+<h1>{{ lang('ACP_CLARTE_SETTINGS') }}</h1>
+<p>{{ lang('ACP_CLARTE_EXPLAIN') }}</p>
+
+{% if not S_CLARTE_INSTALLED %}
+	<div class="errorbox"><p>{{ lang('ACP_CLARTE_STYLE_MISSING', U_ACP_STYLES) }}</p></div>
+{% elseif not S_CLARTE_DEFAULT %}
+	<div class="clarte-info"><p>{{ lang('ACP_CLARTE_STYLE_NOT_DEFAULT', U_ACP_STYLES) }}</p></div>
+{% else %}
+	<div class="successbox"><p>{{ lang('ACP_CLARTE_STYLE_DEFAULT') }}</p></div>
+{% endif %}
+{% endif %}
+
+{% if S_ERROR %}
+	<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>
+{% endif %}
+
+<form id="clarte_settings" method="post" action="{{ U_ACTION }}">
+	<div class="clarte-layout">
+		<div class="clarte-form">
+			{% if S_MODEL_EDIT %}
+			<fieldset>
+				<legend>{{ lang('ACP_CLARTE_MODEL') }}</legend>
+				<dl>
+					<dt><label for="clarte_model_name">{{ lang('ACP_CLARTE_MODEL_NAME') }}{{ lang('COLON') }}</label></dt>
+					<dd><input type="text" id="clarte_model_name" name="clarte_model_name" value="{{ CLARTE_MODEL_NAME }}" maxlength="{{ CLARTE_NAME_MAX }}" required class="inputbox autowidth" size="40"></dd>
+				</dl>
+			</fieldset>
+			{% endif %}
+			<fieldset>
+				<legend>{{ lang('ACP_CLARTE_COLOURS') }}</legend>
+				{% if saved_models|length %}
+				<dl>
+					<dt><label>{{ lang('ACP_CLARTE_SAVED_MODELS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_SAVED_MODELS_EXPLAIN') }}</span></dt>
+					<dd class="clarte-presets">
+						{% for m in saved_models %}
+							<button type="button" class="clarte-preset clarte-model-chip" data-settings="{{ m.SETTINGS }}" title="{{ m.NAME }}">
+								<span class="clarte-preset__swatch" style="background: linear-gradient(135deg, {{ m.FROM }} 0 50%, {{ m.ACCENT }} 50% 100%);"></span>
+								<span>{{ m.NAME }}</span>
+							</button>
+						{% endfor %}
+					</dd>
+				</dl>
+				{% endif %}
+				<dl>
+					<dt><label>{{ lang('ACP_CLARTE_PRESETS') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_PRESETS_EXPLAIN') }}</span></dt>
+					<dd class="clarte-presets">
+						{% for p in presets %}
+							<button type="button" class="clarte-preset" data-accent="{{ p.ACCENT }}" data-from="{{ p.FROM }}" data-to="{{ p.TO }}" title="{{ p.LABEL }}">
+								<span class="clarte-preset__swatch" style="background: linear-gradient(135deg, {{ p.FROM }} 0 50%, {{ p.ACCENT }} 50% 100%);"></span>
+								<span>{{ p.LABEL }}</span>
+							</button>
+						{% endfor %}
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_accent">{{ lang('CLARTE_ACCENT') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_ACCENT_EXPLAIN') }}</span></dt>
+					<dd class="clarte-colour">
+						<input type="color" id="clarte_accent_picker" value="{{ CLARTE_ACCENT }}" data-for="clarte_accent">
+						<input type="text" class="tiny" id="clarte_accent" name="clarte_accent" value="{{ CLARTE_ACCENT }}" maxlength="7" pattern="#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]">
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_header_from">{{ lang('CLARTE_HEADER_FROM') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_HEADER_EXPLAIN') }}</span></dt>
+					<dd class="clarte-colour">
+						<input type="color" id="clarte_header_from_picker" value="{{ CLARTE_HEADER_FROM }}" data-for="clarte_header_from">
+						<input type="text" class="tiny" id="clarte_header_from" name="clarte_header_from" value="{{ CLARTE_HEADER_FROM }}" maxlength="7" pattern="#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]">
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_header_to">{{ lang('CLARTE_HEADER_TO') }}{{ lang('COLON') }}</label></dt>
+					<dd class="clarte-colour">
+						<input type="color" id="clarte_header_to_picker" value="{{ CLARTE_HEADER_TO }}" data-for="clarte_header_to">
+						<input type="text" class="tiny" id="clarte_header_to" name="clarte_header_to" value="{{ CLARTE_HEADER_TO }}" maxlength="7" pattern="#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]">
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_cat_mode">{{ lang('CLARTE_CAT_MODE') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_CAT_MODE_EXPLAIN') }}</span></dt>
+					<dd>
+						<select id="clarte_cat_mode" name="clarte_cat_mode">
+							{% for m in CLARTE_CAT_MODES %}
+								<option value="{{ m }}"{% if CLARTE_CAT_MODE == m %} selected="selected"{% endif %}>{{ lang('CLARTE_CAT_MODE_' ~ m|upper) }}</option>
+							{% endfor %}
+						</select>
+					</dd>
+				</dl>
+				<dl id="clarte_cat_colour_row"{% if CLARTE_CAT_MODE != 'custom' %} style="display: none;"{% endif %}>
+					<dt><label for="clarte_cat_colour">{{ lang('CLARTE_CAT_COLOUR') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_CAT_COLOUR_EXPLAIN') }}</span></dt>
+					<dd class="clarte-colour">
+						<input type="color" id="clarte_cat_colour_picker" value="{{ CLARTE_CAT_COLOUR }}" data-for="clarte_cat_colour">
+						<input type="text" class="tiny" id="clarte_cat_colour" name="clarte_cat_colour" value="{{ CLARTE_CAT_COLOUR }}" maxlength="7" pattern="#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]">
+					</dd>
+				</dl>
+			</fieldset>
+
+			<fieldset>
+				<legend>{{ lang('ACP_CLARTE_APPEARANCE') }}</legend>
+				<dl>
+					<dt><label for="clarte_default_mode">{{ lang('CLARTE_DEFAULT_MODE') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_DEFAULT_MODE_EXPLAIN') }}</span></dt>
+					<dd>
+						<select id="clarte_default_mode" name="clarte_default_mode">
+							{% for m in ['auto', 'light', 'dark'] %}
+								<option value="{{ m }}"{% if CLARTE_DEFAULT_MODE == m %} selected="selected"{% endif %}>{{ lang('CLARTE_MODE_' ~ m|upper) }}</option>
+							{% endfor %}
+						</select>
+					</dd>
+				</dl>
+				{% if not S_MODEL_EDIT %}
+				<dl>
+					<dt><label for="clarte_allow_toggle">{{ lang('CLARTE_ALLOW_TOGGLE') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_ALLOW_TOGGLE_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_allow_toggle" name="clarte_allow_toggle" value="1"{% if CLARTE_ALLOW_TOGGLE %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_allow_toggle" value="0"{% if not CLARTE_ALLOW_TOGGLE %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_acp">{{ lang('CLARTE_ACP') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_ACP_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_acp" name="clarte_acp" value="1"{% if CLARTE_ACP_ENABLED %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_acp" value="0"{% if not CLARTE_ACP_ENABLED %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_index_time">{{ lang('CLARTE_INDEX_TIME') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_INDEX_TIME_EXPLAIN') }}</span></dt>
+					<dd>
+						<select id="clarte_index_time" name="clarte_index_time">
+							{% for t in CLARTE_INDEX_TIMES %}
+								<option value="{{ t }}"{% if CLARTE_INDEX_TIME == t %} selected="selected"{% endif %}>{{ lang('CLARTE_INDEX_TIME_' ~ t|upper) }}</option>
+							{% endfor %}
+						</select>
+					</dd>
+				</dl>
+				{% endif %}
+				<dl>
+					<dt><label for="clarte_font">{{ lang('CLARTE_FONT') }}{{ lang('COLON') }}</label></dt>
+					<dd>
+						<select id="clarte_font" name="clarte_font">
+							<option value="inter"{% if CLARTE_FONT == 'inter' %} selected="selected"{% endif %}>{{ lang('CLARTE_FONT_INTER') }}</option>
+							<option value="system"{% if CLARTE_FONT == 'system' %} selected="selected"{% endif %}>{{ lang('CLARTE_FONT_SYSTEM') }}</option>
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_radius">{{ lang('CLARTE_RADIUS') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_RADIUS_EXPLAIN') }}</span></dt>
+					<dd><input type="number" id="clarte_radius" name="clarte_radius" min="0" max="20" value="{{ CLARTE_RADIUS }}" class="tiny"> px</dd>
+				</dl>
+			</fieldset>
+		</div>
+
+		<div class="clarte-preview-wrap">
+			<h3>{{ lang('ACP_CLARTE_PREVIEW') }}</h3>
+			<div class="clarte-preview-pair">
+				{% for theme in ['light', 'dark'] %}
+				<div class="clarte-preview clarte-preview--{{ theme }}" id="clarte_preview_{{ theme }}">
+					<div class="clarte-preview__header"><span class="clarte-preview__logo"></span>{{ lang('ACP_CLARTE_PREVIEW_TITLE') }}</div>
+					<div class="clarte-preview__nav"><span></span><span></span><span class="is-accent"></span></div>
+					<div class="clarte-preview__card">
+						<div class="clarte-preview__cat"><span>{{ lang('ACP_CLARTE_PREVIEW_CATEGORY') }}</span><i></i></div>
+						<div class="clarte-preview__row"><b></b><i></i></div>
+						<div class="clarte-preview__row"><b></b><i></i></div>
+						<p><a>{{ lang('ACP_CLARTE_PREVIEW_LINK') }}</a></p>
+						<span class="clarte-preview__button">{{ lang('ACP_CLARTE_PREVIEW_BUTTON') }}</span>
+						<span class="clarte-preview__page">1</span><span class="clarte-preview__page is-on">2</span>
+					</div>
+					<div class="clarte-preview__caption">{{ lang('CLARTE_MODE_' ~ theme|upper) }}</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	{% if S_MODEL_EDIT %}
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('ACP_CLARTE_MODEL_SAVE') }}">&nbsp;
+		<a href="{{ U_CLARTE_MODELS }}" class="button2 clarte-button-link">{{ lang('CANCEL') }}</a>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+	{% else %}
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		<input class="button2" type="submit" name="reset" value="{{ lang('ACP_CLARTE_RESET') }}" onclick="return confirm('{{ lang('ACP_CLARTE_RESET_CONFIRM')|e('js') }}');">
+	</fieldset>
+
+	<fieldset class="clarte-save-model">
+		<legend>{{ lang('ACP_CLARTE_SAVE_AS_MODEL') }}</legend>
+		<p>{{ lang('ACP_CLARTE_SAVE_AS_MODEL_EXPLAIN') }} <a href="{{ U_CLARTE_MODELS }}">{{ lang('ACP_CLARTE_GO_MODELS') }}</a></p>
+		<dl>
+			<dt><label for="clarte_model_name">{{ lang('ACP_CLARTE_MODEL_NAME') }}{{ lang('COLON') }}</label></dt>
+			<dd>
+				<input type="text" id="clarte_model_name" name="clarte_model_name" value="" maxlength="{{ CLARTE_NAME_MAX }}" class="inputbox autowidth" size="30" placeholder="{{ lang('ACP_CLARTE_MODEL_NAME_PLACEHOLDER') }}">
+				<input class="button2" type="submit" id="save_model" name="save_model" value="{{ lang('ACP_CLARTE_SAVE_MODEL') }}">
+			</dd>
+		</dl>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+	{% endif %}
+</form>
+
+<script>
+(function () {
+	var form = document.getElementById('clarte_settings');
+	function valid(v) { return /^#[0-9a-fA-F]+$/.test(v) && v.length === 7; } /* sans accolades de quantité : phpBB les prendrait pour une variable */
+	/* Texte le plus lisible sur la couleur choisie (même calcul que listener::ink) */
+	function ink(hex) {
+		var l = [1, 3, 5].map(function (i) { var c = parseInt(hex.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); });
+		var lum = 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2];
+		return 1.05 / (lum + 0.05) >= (lum + 0.05) / 0.067;
+	}
+	function cat(el) {
+		var m = form.clarte_cat_mode.value, c = form.clarte_cat_colour.value, v = { bg: '', ink: '', ink2: '' };
+		if (m === 'tinted') { v = { bg: 'var(--soft)', ink: 'var(--accent-ink)', ink2: 'var(--accent-ink)' }; }
+		else if (m === 'header') { v = { bg: 'linear-gradient(90deg, var(--header-from), var(--header-to))', ink: '#ffffff', ink2: 'rgba(255,255,255,.78)' }; }
+		else if (m === 'custom' && valid(c)) { var w = ink(c); v = { bg: c, ink: w ? '#ffffff' : '#1d2433', ink2: w ? 'rgba(255,255,255,.78)' : 'rgba(29,36,51,.72)' }; }
+		['bg', 'ink', 'ink2'].forEach(function (p) { if (v[p]) { el.style.setProperty('--cat-' + p, v[p]); } else { el.style.removeProperty('--cat-' + p); } });
+		document.getElementById('clarte_cat_colour_row').style.display = m === 'custom' ? '' : 'none';
+		/* champ masqué : une saisie incomplète ne doit pas bloquer l'envoi du formulaire */
+		if (m !== 'custom' && !valid(c)) { form.clarte_cat_colour.value = document.getElementById('clarte_cat_colour_picker').value; }
+	}
+	function paint() {
+		var a = form.clarte_accent.value, f = form.clarte_header_from.value, t = form.clarte_header_to.value, r = parseInt(form.clarte_radius.value, 10);
+		['light', 'dark'].forEach(function (k) {
+			var el = document.getElementById('clarte_preview_' + k);
+			if (valid(a)) { el.style.setProperty('--accent', a); }
+			if (valid(f)) { el.style.setProperty('--header-from', f); }
+			if (valid(t)) { el.style.setProperty('--header-to', t); }
+			if (!isNaN(r)) { el.style.setProperty('--radius', Math.max(0, Math.min(20, r)) + 'px'); }
+			cat(el, k);
+			el.style.fontFamily = form.clarte_font.value === 'system' ? 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif' : '';
+		});
+	}
+	Array.prototype.forEach.call(form.querySelectorAll('input[type=color]'), function (picker) {
+		var text = document.getElementById(picker.getAttribute('data-for'));
+		picker.addEventListener('input', function () { text.value = picker.value; paint(); });
+		text.addEventListener('input', function () { if (valid(text.value)) { picker.value = text.value.toLowerCase(); } paint(); });
+	});
+	Array.prototype.forEach.call(form.querySelectorAll('.clarte-preset'), function (b) {
+		b.addEventListener('click', function () {
+			[['clarte_accent', 'accent'], ['clarte_header_from', 'from'], ['clarte_header_to', 'to']].forEach(function (p) {
+				form[p[0]].value = b.getAttribute('data-' + p[1]);
+				document.getElementById(p[0] + '_picker').value = b.getAttribute('data-' + p[1]);
+			});
+			paint();
+		});
+	});
+	/* Mes modèles : remplit tout le formulaire (couleurs, bandeau, mode, police, arrondi) */
+	Array.prototype.forEach.call(form.querySelectorAll('.clarte-model-chip'), function (b) {
+		b.addEventListener('click', function () {
+			var s = JSON.parse(b.getAttribute('data-settings'));
+			Object.keys(s).forEach(function (k) {
+				if (!form[k]) { return; }
+				form[k].value = s[k];
+				var picker = document.getElementById(k + '_picker');
+				if (picker) { picker.value = s[k]; }
+			});
+			paint();
+		});
+	});
+	/* « Enregistrer comme modèle » : le nom est obligatoire ; Entrée dans le nom enregistre le modèle */
+	var saveModel = document.getElementById('save_model');
+	if (saveModel) {
+		form.clarte_model_name.addEventListener('keydown', function (e) {
+			if (e.key === 'Enter') { e.preventDefault(); saveModel.click(); }
+		});
+		saveModel.addEventListener('click', function (e) {
+			if (!form.clarte_model_name.value.trim()) { e.preventDefault(); form.clarte_model_name.focus(); }
+		});
+	}
+	form.clarte_radius.addEventListener('input', paint);
+	form.clarte_font.addEventListener('change', paint);
+	form.clarte_cat_mode.addEventListener('change', paint);
+	paint();
+})();
+</script>
+
+{% include 'overall_footer.html' %}

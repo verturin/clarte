@@ -1,0 +1,87 @@
+/* Clarté — page de réglages dans l'ACP */
+.clarte-info { background: var(--accent-soft, #eef4ff); border: 1px solid var(--accent-line, #c7d7fb); color: var(--text, inherit); border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+.clarte-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 18px; align-items: start; }
+@media (max-width: 1100px) { .clarte-layout { grid-template-columns: 1fr; } }
+.clarte-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.clarte-preset { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px 4px 4px; border: 1px solid var(--line-strong, #ccd3df); border-radius: 999px; background: var(--surface, #fff); color: var(--text, #1d2433); cursor: pointer; font-size: 11px; font-family: inherit; }
+.clarte-preset:hover { border-color: var(--accent, #2563eb); }
+.clarte-preset__swatch { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.clarte-colour { display: flex; align-items: center; gap: 8px; }
+.clarte-colour input[type=color] { width: 44px; height: 30px; padding: 0 2px; border: 1px solid var(--line-strong, #ccd3df); border-radius: 6px; background: var(--surface, #fff); cursor: pointer; }
+.clarte-colour input[type=text] { width: 80px; font-family: monospace; }
+.clarte-preview-wrap { position: sticky; top: 10px; }
+.clarte-preview-wrap h3 { margin-top: 0; }
+.clarte-preview-pair { display: grid; gap: 12px; }
+
+.clarte-preview { --accent: #2563eb; --header-from: #0f172a; --header-to: #1e3a8a; --radius: 12px;
+	--page: #f2f5fa; --surface: #fff; --line: #e1e5ec; --text: #1d2433; --muted: #5b6577;
+	--accent-ink: color-mix(in srgb, var(--accent) 80%, #000); --soft: color-mix(in srgb, var(--accent) 10%, var(--surface));
+	background: var(--page); color: var(--text); border: 1px solid var(--line-strong, #ccd3df); border-radius: 10px; padding: 10px; font-family: Inter, system-ui, sans-serif; font-size: 12px; }
+.clarte-preview--dark { --page: #0c121c; --surface: #151c29; --line: #263044; --text: #e5e8ee; --muted: #97a1b3;
+	--accent-ink: color-mix(in srgb, var(--accent) 55%, #fff); --soft: color-mix(in srgb, var(--accent) 18%, var(--surface)); }
+.clarte-preview__header { background: linear-gradient(135deg, var(--header-from), var(--header-to)); color: #fff; font-weight: 700; font-size: 14px; padding: 12px; border-radius: var(--radius); display: flex; align-items: center; gap: 8px; }
+.clarte-preview__logo { width: 18px; height: 18px; border-radius: 5px; background: rgba(255,255,255,.85); }
+.clarte-preview__nav { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin: 6px 0; padding: 7px 10px; display: flex; gap: 8px; }
+.clarte-preview__nav span { height: 6px; width: 36px; border-radius: 3px; background: var(--line); }
+.clarte-preview__nav span.is-accent { background: var(--accent); margin-left: auto; width: 24px; }
+.clarte-preview__card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 10px; }
+.clarte-preview__cat { display: flex; align-items: center; justify-content: space-between; margin: -8px -10px 4px; padding: 6px 10px; border-radius: var(--radius) var(--radius) 0 0;
+	background: var(--cat-bg, color-mix(in srgb, var(--surface) 96%, var(--text))); color: var(--cat-ink, var(--text)); font-weight: 700; border-bottom: 1px solid var(--line); }
+.clarte-preview__cat i { height: 6px; width: 22%; border-radius: 3px; background: var(--cat-ink2, var(--muted)); opacity: .6; }
+.clarte-preview__row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--line); }
+.clarte-preview__row b { height: 7px; width: 55%; border-radius: 3px; background: var(--text); opacity: .75; }
+.clarte-preview__row i { height: 7px; width: 18%; border-radius: 3px; background: var(--muted); opacity: .5; }
+.clarte-preview__card p { margin: 7px 0; }
+.clarte-preview__card a { color: var(--accent-ink); font-weight: 600; text-decoration: underline; }
+.clarte-preview__button { display: inline-block; background: var(--accent); color: #fff; font-weight: 600; padding: 3px 10px; border-radius: calc(var(--radius) * 2 / 3); margin-right: 8px; }
+.clarte-preview__page { display: inline-block; min-width: 18px; text-align: center; border: 1px solid var(--line); border-radius: 5px; margin-left: 2px; color: var(--text); }
+.clarte-preview__page.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.clarte-preview__caption { text-align: center; color: var(--muted); font-size: 11px; margin-top: 6px; }
+
+/* Enregistrer comme modèle, retour à la liste */
+.clarte-save-model { margin-top: 18px; }
+.clarte-save-model p { margin: 0 0 8px; }
+.clarte-save-model dd input.button2 { margin-left: 6px; vertical-align: middle; }
+.clarte-back { display: inline-block; margin-bottom: 6px; }
+.clarte-button-link { display: inline-block; text-decoration: none; padding: 3px 10px; }
+
+/* Modèles enregistrés */
+.clarte-models td { vertical-align: middle; }
+.clarte-models__swatches { display: inline-flex; gap: 3px; vertical-align: middle; margin-right: 8px; }
+.clarte-models__swatches i { display: inline-block; width: 16px; height: 16px; border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); }
+.clarte-models__current { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; font-size: .85em; font-weight: 600;
+	background: color-mix(in srgb, #059669 14%, transparent); color: #047857; }
+html[data-theme="dark"] .clarte-models__current { color: #34d399; }
+.clarte-models__summary { color: inherit; opacity: .8; }
+.clarte-models__date { white-space: nowrap; }
+.clarte-models__actions { white-space: nowrap; text-align: right; }
+.clarte-action { display: inline-block; margin-left: 10px; font-weight: 600; }
+.clarte-action--danger { color: #dc2626 !important; }
+html[data-theme="dark"] .clarte-action--danger { color: #f87171 !important; }
+.clarte-models__count { margin: 8px 0 18px; }
+.clarte-links { margin-top: 16px; }
+.clarte-backup__current { margin: 0 0 10px; line-height: 1.7; }
+@media only screen and (max-width: 700px) {
+	.clarte-models__summary, .clarte-models__date { display: none; }
+	.clarte-models__actions { white-space: normal; text-align: left; }
+	.clarte-action { margin: 2px 10px 2px 0; }
+}
+.clarte-checks label { display: block; margin: 3px 0; }
+
+/* Couleurs par forum */
+.clarte-forums td { vertical-align: middle; }
+.clarte-forums__name { display: inline-block; }
+.clarte-forums__name.is-cat { font-weight: 700; }
+.clarte-forums__branch { opacity: .45; }
+.clarte-forums__choice select { min-width: 220px; max-width: 100%; }
+.clarte-forums__from { opacity: .7; font-size: .95em; }
+
+/* Style au choix des membres (liste des modèles) */
+.clarte-models__style { display: block; margin-top: 3px; font-size: .9em; opacity: .85; }
+.clarte-models__forums { display: block; margin-top: 2px; font-size: .9em; opacity: .7; }
+@media only screen and (max-width: 700px) {
+	.clarte-forums__result { display: none; }
+	.clarte-forums__choice select { min-width: 0; }
+}
+.clarte-forums__warn { display: block; margin-top: 2px; font-size: .9em; font-weight: 600; color: #dc2626; }
+html[data-theme="dark"] .clarte-forums__warn { color: #f87171; }

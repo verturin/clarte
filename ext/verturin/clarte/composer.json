@@ -1,0 +1,16 @@
+{
+	"name": "verturin/clarte",
+	"type": "phpbb-extension",
+	"description": "Réglages du style Clarté : couleur principale, couleurs de l'en-tête, mode clair, sombre ou automatique.",
+	"homepage": "https://github.com/verturin/clarte",
+	"version": "1.4.1",
+	"time": "2026-10-11",
+	"license": "GPL-2.0-only",
+	"authors": [{ "name": "verturin", "role": "Développeur" }],
+	"require": { "php": ">=7.2.0", "composer/installers": "~1.0" },
+	"extra": {
+		"display-name": "Clarté — réglages du style",
+		"soft-require": { "phpbb/phpbb": ">=3.3.15" },
+		"version-check": { "host": "raw.githubusercontent.com", "directory": "/verturin/clarte/main", "filename": "version.json" }
+	}
+}

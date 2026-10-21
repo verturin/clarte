@@ -1,0 +1,567 @@
+/* Clarté — couleurs de l'administration (généré par tools/tokenize_admin.py, ne pas modifier à la main). */
+:root {
+	--k-000000: hsl(220 0% 0%);
+	--k-0000bb: color-mix(in srgb, var(--accent) 84%, #000);
+	--k-007700: #007700;
+	--k-105289: color-mix(in srgb, var(--accent) 82%, #000);
+	--k-111111: hsl(220 12% 7%);
+	--k-115098: color-mix(in srgb, var(--accent) 87%, #000);
+	--k-1180b7: color-mix(in srgb, var(--accent) 87%, #000);
+	--k-138ecb: color-mix(in srgb, var(--accent) 92%, #000);
+	--k-1e6b34: #1e6b34;
+	--k-1e90ff: color-mix(in srgb, var(--accent) 92%, #fff);
+	--k-228822: #228822;
+	--k-23649f: color-mix(in srgb, var(--accent) 86%, #000);
+	--k-2e4057: hsl(222 24% 26%);
+	--k-2e7d32: #2e7d32;
+	--k-327aa5: color-mix(in srgb, var(--accent) 91%, #000);
+	--k-333333: hsl(220 12% 20%);
+	--k-368ad2: color-mix(in srgb, var(--accent) 98%, #fff);
+	--k-3c763d: #3c763d;
+	--k-3c84ad: color-mix(in srgb, var(--accent) 95%, #000);
+	--k-4692bf: color-mix(in srgb, var(--accent) 98%, #fff);
+	--k-4a5a73: hsl(222 22% 37%);
+	--k-4ba5de: color-mix(in srgb, var(--accent) 88%, #fff);
+	--k-536482: hsl(222 22% 42%);
+	--k-55606e: hsl(220 12% 38%);
+	--k-5c758c: hsl(222 21% 45%);
+	--k-62a5cc: color-mix(in srgb, var(--accent) 87%, #fff);
+	--k-62c046: #62c046;
+	--k-666666: hsl(220 12% 40%);
+	--k-6b7684: hsl(220 12% 47%);
+	--k-6dacd2: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-70aed3: color-mix(in srgb, var(--accent) 81%, #fff);
+	--k-767676: hsl(220 12% 46%);
+	--k-7a5b00: #7a5b00;
+	--k-86f786: #86f786;
+	--k-888888: hsl(220 12% 53%);
+	--k-8a1c27: #8a1c27;
+	--k-999999: hsl(220 12% 60%);
+	--k-a07800: #a07800;
+	--k-a12f2f: #a12f2f;
+	--k-aaaaaa: hsl(220 12% 67%);
+	--k-afaeaa: hsl(220 12% 68%);
+	--k-b2bbdd: color-mix(in srgb, var(--accent) 41%, #fff);
+	--k-b4bac0: hsl(220 12% 73%);
+	--k-b9b9b9: hsl(220 12% 73%);
+	--k-b9c2ce: hsl(220 12% 77%);
+	--k-bbbbbb: hsl(220 12% 73%);
+	--k-bc2a4d: #bc2a4d;
+	--k-c0392b: #c0392b;
+	--k-c0bfbb: hsl(220 12% 74%);
+	--k-c94f4f: #c94f4f;
+	--k-c9a227: #c9a227;
+	--k-c9d0da: hsl(222 19% 82%);
+	--k-cacbcf: hsl(220 12% 80%);
+	--k-cadceb: color-mix(in srgb, var(--accent) 28%, #fff);
+	--k-cccccc: hsl(220 12% 80%);
+	--k-cccfd3: hsl(220 12% 81%);
+	--k-cecece: hsl(220 12% 81%);
+	--k-d0d0d0: hsl(220 12% 82%);
+	--k-d1d7dc: hsl(220 12% 84%);
+	--k-d31141: #d31141;
+	--k-d4d6da: hsl(220 12% 84%);
+	--k-d4edda: #d4edda;
+	--k-d5d5c8: hsl(220 12% 81%);
+	--k-d5dbe3: hsl(222 20% 86%);
+	--k-d74558: #d74558;
+	--k-d7d7d7: hsl(220 12% 84%);
+	--k-d9e5ee: color-mix(in srgb, var(--accent) 22%, #fff);
+	--k-d9edf7: color-mix(in srgb, var(--accent) 19%, #fff);
+	--k-dbd7d1: hsl(220 12% 84%);
+	--k-dbdfe2: hsl(220 12% 87%);
+	--k-dcdcdc: hsl(220 12% 86%);
+	--k-dcdee2: hsl(220 12% 87%);
+	--k-dcebfe: color-mix(in srgb, var(--accent) 16%, #fff);
+	--k-dd0000: #dd0000;
+	--k-dd6900: #dd6900;
+	--k-dde3ea: hsl(222 24% 89%);
+	--k-dedede: hsl(220 12% 87%);
+	--k-df075c: #df075c;
+	--k-e2e7ed: hsl(222 23% 91%);
+	--k-e3dfd8: hsl(220 12% 87%);
+	--k-e3ebf2: color-mix(in srgb, var(--accent) 18%, #fff);
+	--k-e4e8eb: hsl(220 12% 91%);
+	--k-e7eef4: color-mix(in srgb, var(--accent) 16%, #fff);
+	--k-e8e8e8: hsl(220 12% 91%);
+	--k-e8f4fd: color-mix(in srgb, var(--accent) 12%, #fff);
+	--k-e9e9e2: hsl(220 12% 90%);
+	--k-e9e9e9: hsl(220 12% 91%);
+	--k-ecedee: hsl(220 12% 93%);
+	--k-eeeeee: hsl(220 12% 93%);
+	--k-eef1f5: hsl(222 24% 95%);
+	--k-efb0b2: #efb0b2;
+	--k-efefef: hsl(220 12% 94%);
+	--k-eff0f2: hsl(220 12% 94%);
+	--k-f1f1ee: hsl(220 12% 94%);
+	--k-f2f2f2: hsl(220 12% 95%);
+	--k-f3f3f3: hsl(220 12% 95%);
+	--k-f632a0: #f632a0;
+	--k-f69934: #f69934;
+	--k-f6f6f6: hsl(220 12% 96%);
+	--k-f6f8fb: color-mix(in srgb, var(--accent) 8%, #fff);
+	--k-f8d7da: #f8d7da;
+	--k-f9f9f9: hsl(220 12% 98%);
+	--k-fafafa: hsl(220 12% 98%);
+	--k-fca600: #fca600;
+	--k-ff8000: #ff8000;
+	--k-fff3cd: #fff3cd;
+	--k-ffffff: hsl(220 0% 100%);
+}
+html[data-theme="dark"] {
+	--k-000000: hsl(222 8% 90%);
+	--k-0000bb: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-007700: color-mix(in srgb, #007700 55%, #fff);
+	--k-105289: color-mix(in srgb, var(--accent) 58%, #fff);
+	--k-111111: hsl(222 8% 85%);
+	--k-115098: color-mix(in srgb, var(--accent) 60%, #fff);
+	--k-1180b7: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-138ecb: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-1e6b34: color-mix(in srgb, #1e6b34 55%, #fff);
+	--k-1e90ff: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-228822: color-mix(in srgb, #228822 55%, #fff);
+	--k-23649f: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-2e4057: hsl(222 18% 69%);
+	--k-2e7d32: color-mix(in srgb, #2e7d32 55%, #fff);
+	--k-327aa5: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-333333: hsl(222 8% 74%);
+	--k-368ad2: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-3c763d: color-mix(in srgb, #3c763d 55%, #fff);
+	--k-3c84ad: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-4692bf: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-4a5a73: hsl(222 18% 60%);
+	--k-4ba5de: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-536482: hsl(222 18% 57%);
+	--k-55606e: hsl(222 18% 59%);
+	--k-5c758c: hsl(222 18% 54%);
+	--k-62a5cc: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-62c046: #62c046;
+	--k-666666: hsl(222 8% 58%);
+	--k-6b7684: hsl(222 18% 53%);
+	--k-6dacd2: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-70aed3: color-mix(in srgb, var(--accent) 82%, #fff);
+	--k-767676: hsl(222 8% 53%);
+	--k-7a5b00: color-mix(in srgb, #7a5b00 55%, #fff);
+	--k-86f786: #86f786;
+	--k-888888: hsl(222 8% 47%);
+	--k-8a1c27: color-mix(in srgb, #8a1c27 55%, #fff);
+	--k-999999: hsl(222 8% 42%);
+	--k-a07800: color-mix(in srgb, #a07800 55%, #fff);
+	--k-a12f2f: #a12f2f;
+	--k-aaaaaa: hsl(222 8% 37%);
+	--k-afaeaa: hsl(222 11% 36%);
+	--k-b2bbdd: color-mix(in srgb, var(--accent) 32%, var(--dk-surface));
+	--k-b4bac0: hsl(222 17% 32%);
+	--k-b9b9b9: hsl(222 8% 32%);
+	--k-b9c2ce: hsl(222 18% 29%);
+	--k-bbbbbb: hsl(222 8% 31%);
+	--k-bc2a4d: #bc2a4d;
+	--k-c0392b: #c0392b;
+	--k-c0bfbb: hsl(222 12% 31%);
+	--k-c94f4f: #c94f4f;
+	--k-c9a227: #c9a227;
+	--k-c9d0da: hsl(222 18% 24%);
+	--k-cacbcf: hsl(222 13% 26%);
+	--k-cadceb: color-mix(in srgb, var(--accent) 24%, var(--dk-surface));
+	--k-cccccc: hsl(222 8% 26%);
+	--k-cccfd3: hsl(222 15% 25%);
+	--k-cecece: hsl(222 8% 25%);
+	--k-d0d0d0: hsl(222 8% 25%);
+	--k-d1d7dc: hsl(222 18% 23%);
+	--k-d31141: #d31141;
+	--k-d4d6da: hsl(222 15% 23%);
+	--k-d4edda: color-mix(in srgb, #d4edda 20%, var(--dk-surface));
+	--k-d5d5c8: hsl(222 18% 25%);
+	--k-d5dbe3: hsl(222 18% 21%);
+	--k-d74558: #d74558;
+	--k-d7d7d7: hsl(222 8% 23%);
+	--k-d9e5ee: color-mix(in srgb, var(--accent) 20%, var(--dk-surface));
+	--k-d9edf7: color-mix(in srgb, var(--accent) 18%, var(--dk-surface));
+	--k-dbd7d1: hsl(222 18% 23%);
+	--k-dbdfe2: hsl(222 18% 20%);
+	--k-dcdcdc: hsl(222 8% 21%);
+	--k-dcdee2: hsl(222 17% 20%);
+	--k-dcebfe: color-mix(in srgb, var(--accent) 16%, var(--dk-surface));
+	--k-dd0000: #dd0000;
+	--k-dd6900: #dd6900;
+	--k-dde3ea: hsl(222 18% 19%);
+	--k-dedede: hsl(222 8% 20%);
+	--k-df075c: #df075c;
+	--k-e2e7ed: hsl(222 18% 17%);
+	--k-e3dfd8: hsl(222 18% 21%);
+	--k-e3ebf2: color-mix(in srgb, var(--accent) 17%, var(--dk-surface));
+	--k-e4e8eb: hsl(222 18% 17%);
+	--k-e7eef4: color-mix(in srgb, var(--accent) 16%, var(--dk-surface));
+	--k-e8e8e8: hsl(222 8% 17%);
+	--k-e8f4fd: color-mix(in srgb, var(--accent) 13%, var(--dk-surface));
+	--k-e9e9e2: hsl(222 18% 18%);
+	--k-e9e9e9: hsl(222 8% 17%);
+	--k-ecedee: hsl(222 14% 16%);
+	--k-eeeeee: hsl(222 8% 15%);
+	--k-eef1f5: hsl(222 18% 14%);
+	--k-efb0b2: color-mix(in srgb, #efb0b2 20%, var(--dk-surface));
+	--k-efefef: hsl(222 8% 15%);
+	--k-eff0f2: hsl(222 18% 15%);
+	--k-f1f1ee: hsl(222 18% 15%);
+	--k-f2f2f2: hsl(222 8% 14%);
+	--k-f3f3f3: hsl(222 8% 14%);
+	--k-f632a0: #f632a0;
+	--k-f69934: #f69934;
+	--k-f6f6f6: hsl(222 8% 13%);
+	--k-f6f8fb: color-mix(in srgb, var(--accent) 11%, var(--dk-surface));
+	--k-f8d7da: color-mix(in srgb, #f8d7da 20%, var(--dk-surface));
+	--k-f9f9f9: hsl(222 8% 12%);
+	--k-fafafa: hsl(222 8% 12%);
+	--k-fca600: #fca600;
+	--k-ff8000: #ff8000;
+	--k-fff3cd: color-mix(in srgb, #fff3cd 20%, var(--dk-surface));
+	--k-ffffff: var(--dk-surface);
+}
+@media (prefers-color-scheme: dark) {
+	html:not([data-theme="light"]) {
+		--k-000000: hsl(222 8% 90%);
+		--k-0000bb: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-007700: color-mix(in srgb, #007700 55%, #fff);
+		--k-105289: color-mix(in srgb, var(--accent) 58%, #fff);
+		--k-111111: hsl(222 8% 85%);
+		--k-115098: color-mix(in srgb, var(--accent) 60%, #fff);
+		--k-1180b7: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-138ecb: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-1e6b34: color-mix(in srgb, #1e6b34 55%, #fff);
+		--k-1e90ff: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-228822: color-mix(in srgb, #228822 55%, #fff);
+		--k-23649f: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-2e4057: hsl(222 18% 69%);
+		--k-2e7d32: color-mix(in srgb, #2e7d32 55%, #fff);
+		--k-327aa5: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-333333: hsl(222 8% 74%);
+		--k-368ad2: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-3c763d: color-mix(in srgb, #3c763d 55%, #fff);
+		--k-3c84ad: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-4692bf: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-4a5a73: hsl(222 18% 60%);
+		--k-4ba5de: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-536482: hsl(222 18% 57%);
+		--k-55606e: hsl(222 18% 59%);
+		--k-5c758c: hsl(222 18% 54%);
+		--k-62a5cc: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-62c046: #62c046;
+		--k-666666: hsl(222 8% 58%);
+		--k-6b7684: hsl(222 18% 53%);
+		--k-6dacd2: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-70aed3: color-mix(in srgb, var(--accent) 82%, #fff);
+		--k-767676: hsl(222 8% 53%);
+		--k-7a5b00: color-mix(in srgb, #7a5b00 55%, #fff);
+		--k-86f786: #86f786;
+		--k-888888: hsl(222 8% 47%);
+		--k-8a1c27: color-mix(in srgb, #8a1c27 55%, #fff);
+		--k-999999: hsl(222 8% 42%);
+		--k-a07800: color-mix(in srgb, #a07800 55%, #fff);
+		--k-a12f2f: #a12f2f;
+		--k-aaaaaa: hsl(222 8% 37%);
+		--k-afaeaa: hsl(222 11% 36%);
+		--k-b2bbdd: color-mix(in srgb, var(--accent) 32%, var(--dk-surface));
+		--k-b4bac0: hsl(222 17% 32%);
+		--k-b9b9b9: hsl(222 8% 32%);
+		--k-b9c2ce: hsl(222 18% 29%);
+		--k-bbbbbb: hsl(222 8% 31%);
+		--k-bc2a4d: #bc2a4d;
+		--k-c0392b: #c0392b;
+		--k-c0bfbb: hsl(222 12% 31%);
+		--k-c94f4f: #c94f4f;
+		--k-c9a227: #c9a227;
+		--k-c9d0da: hsl(222 18% 24%);
+		--k-cacbcf: hsl(222 13% 26%);
+		--k-cadceb: color-mix(in srgb, var(--accent) 24%, var(--dk-surface));
+		--k-cccccc: hsl(222 8% 26%);
+		--k-cccfd3: hsl(222 15% 25%);
+		--k-cecece: hsl(222 8% 25%);
+		--k-d0d0d0: hsl(222 8% 25%);
+		--k-d1d7dc: hsl(222 18% 23%);
+		--k-d31141: #d31141;
+		--k-d4d6da: hsl(222 15% 23%);
+		--k-d4edda: color-mix(in srgb, #d4edda 20%, var(--dk-surface));
+		--k-d5d5c8: hsl(222 18% 25%);
+		--k-d5dbe3: hsl(222 18% 21%);
+		--k-d74558: #d74558;
+		--k-d7d7d7: hsl(222 8% 23%);
+		--k-d9e5ee: color-mix(in srgb, var(--accent) 20%, var(--dk-surface));
+		--k-d9edf7: color-mix(in srgb, var(--accent) 18%, var(--dk-surface));
+		--k-dbd7d1: hsl(222 18% 23%);
+		--k-dbdfe2: hsl(222 18% 20%);
+		--k-dcdcdc: hsl(222 8% 21%);
+		--k-dcdee2: hsl(222 17% 20%);
+		--k-dcebfe: color-mix(in srgb, var(--accent) 16%, var(--dk-surface));
+		--k-dd0000: #dd0000;
+		--k-dd6900: #dd6900;
+		--k-dde3ea: hsl(222 18% 19%);
+		--k-dedede: hsl(222 8% 20%);
+		--k-df075c: #df075c;
+		--k-e2e7ed: hsl(222 18% 17%);
+		--k-e3dfd8: hsl(222 18% 21%);
+		--k-e3ebf2: color-mix(in srgb, var(--accent) 17%, var(--dk-surface));
+		--k-e4e8eb: hsl(222 18% 17%);
+		--k-e7eef4: color-mix(in srgb, var(--accent) 16%, var(--dk-surface));
+		--k-e8e8e8: hsl(222 8% 17%);
+		--k-e8f4fd: color-mix(in srgb, var(--accent) 13%, var(--dk-surface));
+		--k-e9e9e2: hsl(222 18% 18%);
+		--k-e9e9e9: hsl(222 8% 17%);
+		--k-ecedee: hsl(222 14% 16%);
+		--k-eeeeee: hsl(222 8% 15%);
+		--k-eef1f5: hsl(222 18% 14%);
+		--k-efb0b2: color-mix(in srgb, #efb0b2 20%, var(--dk-surface));
+		--k-efefef: hsl(222 8% 15%);
+		--k-eff0f2: hsl(222 18% 15%);
+		--k-f1f1ee: hsl(222 18% 15%);
+		--k-f2f2f2: hsl(222 8% 14%);
+		--k-f3f3f3: hsl(222 8% 14%);
+		--k-f632a0: #f632a0;
+		--k-f69934: #f69934;
+		--k-f6f6f6: hsl(222 8% 13%);
+		--k-f6f8fb: color-mix(in srgb, var(--accent) 11%, var(--dk-surface));
+		--k-f8d7da: color-mix(in srgb, #f8d7da 20%, var(--dk-surface));
+		--k-f9f9f9: hsl(222 8% 12%);
+		--k-fafafa: hsl(222 8% 12%);
+		--k-fca600: #fca600;
+		--k-ff8000: #ff8000;
+		--k-fff3cd: color-mix(in srgb, #fff3cd 20%, var(--dk-surface));
+		--k-ffffff: var(--dk-surface);
+	}
+}
+
+/* --- admin.css --- */
+html { color: var(--k-536482); background-color: var(--k-dbd7d1); }
+body { color: var(--k-536482); background-color: var(--k-dbd7d1); }
+h1 { color: var(--k-333333); }
+h2, caption { color: var(--k-115098); }
+hr { border-top-color: var(--k-999999); }
+a:link, a:visited { color: var(--k-105289); }
+a:hover { color: var(--k-bc2a4d); }
+a:active { color: var(--k-368ad2); }
+#page-header h1 { color: var(--k-767676); }
+#content h1 { color: var(--k-115098); }
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	#content { background-image: none; background-color: var(--k-f3f3f3); }
+}
+#tabs .tab > a { background-color: var(--k-d4d6da); background: linear-gradient(to bottom, var(--k-cacbcf) 0%, var(--k-d4d6da) 100%); border-color: var(--k-bbbbbb); color: var(--k-767676); }
+#tabs .tab > a:hover { background-color: var(--k-f1f1ee); border-color: var(--k-c0bfbb); color: var(--k-bc2a4d); }
+#tabs .activetab > a, #tabs .activetab > a:hover { background-color: var(--k-dcdee2); background: linear-gradient(to bottom, var(--k-f2f2f2) 0%, var(--k-dcdee2) 100%); border-color: var(--k-999999); border-bottom-color: var(--k-dcdee2); box-shadow: 0 1px 1px var(--k-ffffff) inset; color: var(--k-23649f); }
+#tabs .activetab > a:hover { color: var(--k-115098); }
+.responsive-tab .responsive-tab-link:before { border-bottom-color: var(--k-767676); border-top-color: var(--k-767676); }
+.responsive-tab .responsive-tab-link:hover:before { border-color: var(--k-bc2a4d); }
+.responsive-tab.activetab .responsive-tab-link:before { border-color: var(--k-23649f); }
+.responsive-tab.activetab .responsive-tab-link:hover:before { border-color: var(--k-115098); }
+#tabs .dropdown li { border-bottom-color: var(--k-dcdcdc); }
+#acp { background-image: none; background-color: var(--k-f3f3f3); border-color: var(--k-999999); box-shadow: var(--k-ffffff) 0 0 0 1px inset; }
+.panel { background-image: none; background-color: var(--k-f3f3f3); }
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	#acp { background-color: var(--k-ffffff); }
+}
+#menu { border-right-color: var(--k-cccfd3); }
+.rtl #menu { border-left-color: var(--k-cccfd3); }
+#menu li span { color: var(--k-138ecb); }
+#menu li a:hover, #menu li a:hover span { background-color: var(--k-ffffff); color: var(--k-bc2a4d); }
+#menu li a:active, #menu li a:active span { color: var(--k-f632a0); }
+#menu li#activemenu a span { color: var(--k-1180b7); }
+#menu li#activemenu a:hover span, #menu li#activemenu span { color: var(--k-bc2a4d); background-color: var(--k-ffffff); }
+.rtl #menu li#activemenu a:hover span, .rtl #menu li#activemenu span { background-color: var(--k-ffffff); }
+#menu li a:active, #menu li a:active span, #menu li#activemenu a:active span { color: var(--k-f632a0); }
+#menu .header { color: var(--k-115098); border-bottom-color: var(--k-327aa5); }
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	#menu .menu-block.active { background-color: rgba(255, 255, 255, .5); }
+	#menu .menu-block .header:focus, #menu .menu-block.active .header { color: var(--k-d31141); }
+	#menu .menu-block li:last-child { border-bottom-color: var(--k-327aa5); }
+}
+table { border-color: var(--k-cccfd3); background-color: var(--k-ffffff); }
+th { color: var(--k-ffffff); background-image: none; background-color: var(--k-70aed3); border-top-color: var(--k-6dacd2); border-bottom-color: var(--k-327aa5); }
+table.type2 th { color: var(--k-115098); }
+table.type3 thead th { color: var(--k-115098); }
+.row1 { background-color: var(--k-f9f9f9); }
+table.zebra-table tbody tr:nth-child(odd) { background-color: var(--k-f9f9f9); }
+.row2 { background-color: var(--k-dcebfe); }
+table.zebra-table tbody tr:nth-child(even) { background-color: var(--k-dcebfe); }
+.row3 { background-color: var(--k-dbdfe2); }
+.row4 { background-color: var(--k-e4e8eb); }
+.col1 { background-color: var(--k-dcebfe); }
+.col2 { background-color: var(--k-f9f9f9); }
+.row1a { background-color: var(--k-f9f9f9); }
+.row1b { background-color: var(--k-f6f6f6); }
+.row2a { background-color: var(--k-e7eef4); }
+.row2b { background-color: var(--k-e3ebf2); }
+tr.row-highlight:hover td { background-color: var(--k-dbdfe2); }
+.spacer { background-color: var(--k-dbdfe2); }
+.row-inactive { color: var(--k-999999); }
+.row-inactive a, .row-inactive strong { color: var(--k-888888); }
+.row-inactive a:hover { color: var(--k-bc2a4d); }
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	table.responsive caption { color: var(--k-ffffff); background-image: none; background-color: var(--k-70aed3); border-top-color: var(--k-6dacd2); border-bottom-color: var(--k-327aa5); }
+	table.responsive tr { border-color: var(--k-cccfd3); background-color: var(--k-ffffff); }
+	table.responsive tr.row1 td { background-color: var(--k-f9f9f9); }
+	table.responsive tr.row2 td { background-color: var(--k-dcebfe); }
+	table.responsive tr.row3 td { background-color: var(--k-dbdfe2); }
+	table.responsive tr.row4 td { background-color: var(--k-e4e8eb); }
+	table.responsive tr.col1 td { background-color: var(--k-dcebfe); }
+	table.responsive tr.col2 td { background-color: var(--k-f9f9f9); }
+	table.responsive tr.row1a td { background-color: var(--k-f9f9f9); }
+	table.responsive tr.row1b td { background-color: var(--k-f6f6f6); }
+	table.responsive tr.row2a td { background-color: var(--k-e7eef4); }
+	table.responsive tr.row2b td { background-color: var(--k-e3ebf2); }
+}
+fieldset { border-top-color: var(--k-d7d7d7); border-right-color: var(--k-cccccc); border-bottom-color: var(--k-cccccc); border-left-color: var(--k-d7d7d7); background-color: var(--k-ffffff); }
+.rtl fieldset { border-top-color: var(--k-d7d7d7); border-right-color: var(--k-d7d7d7); border-bottom-color: var(--k-cccccc); border-left-color: var(--k-cccccc); }
+legend { color: var(--k-115098); }
+input, textarea { color: var(--k-111111); border-left-color: var(--k-afaeaa); border-top-color: var(--k-afaeaa); border-right-color: var(--k-d5d5c8); border-bottom-color: var(--k-d5d5c8); background-color: var(--k-e3dfd8); }
+.rtl input, .rtl textarea { border-left-color: var(--k-d5d5c8); border-top-color: var(--k-afaeaa); border-right-color: var(--k-afaeaa); border-bottom-color: var(--k-d5d5c8); }
+input:hover, textarea:hover { border-left-color: var(--k-afaeaa); border-top-color: var(--k-afaeaa); border-right-color: var(--k-afaeaa); border-bottom-color: var(--k-afaeaa); background-color: var(--k-e9e9e2); }
+optgroup, select { background-color: var(--k-fafafa); border-color: var(--k-666666); color: var(--k-000000); }
+option { color: var(--k-000000); }
+select option.disabled { background-color: var(--k-bbbbbb); color: var(--k-ffffff); }
+dd { color: var(--k-666666); }
+dt label { color: var(--k-4a5a73); }
+dd label { color: var(--k-4a5a73); }
+fieldset dt { border-right-color: var(--k-cccccc); }
+.rtl fieldset dt { border-left-color: var(--k-cccccc); }
+fieldset dd { border-left-color: var(--k-cccccc); }
+.rtl fieldset dd { border-right-color: var(--k-cccccc); }
+fieldset dl:hover dt, fieldset dl:hover dd { border-color: var(--k-666666); }
+fieldset dl:hover dt label { color: var(--k-000000); }
+fieldset dl dd label:hover { color: var(--k-bc2a4d); }
+input:focus, textarea:focus { border-color: var(--k-bc2a4d); background-color: var(--k-e9e9e2); color: var(--k-bc2a4d); }
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	fieldset dl { border-bottom-color: var(--k-e8e8e8); }
+}
+.box2 .inputbox { background-color: var(--k-e9e9e9); }
+a.button1, input.button1, a.button2, input.button2 { color: var(--k-000000); background-image: none; background-color: var(--k-efefef); }
+a.button1, input.button1 { border-color: var(--k-666666); }
+a.button2, input.button2 { border-color: var(--k-666666); }
+a.button1, a.button1:link, a.button1:visited, a.button1:active, a.button2, a.button2:link, a.button2:visited, a.button2:active { color: var(--k-000000); }
+a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover { border-color: var(--k-bc2a4d); background-image: none; background-color: var(--k-efefef); color: var(--k-bc2a4d); }
+input.disabled { color: var(--k-666666); }
+.phpbb_alert { background-color: var(--k-ffffff); border-color: var(--k-999999); }
+#darken { background-color: var(--k-000000); }
+#loading_indicator { background-color: var(--k-000000); }
+.pagination li a, .pagination li a:link, .pagination li a:visited { color: var(--k-5c758c); background-color: var(--k-ecedee); border-color: var(--k-b4bac0); }
+.pagination li.ellipsis span { color: var(--k-000000); }
+.pagination li.active span { color: var(--k-ffffff); background-color: var(--k-4692bf); border-color: var(--k-4692bf); }
+.pagination li a:hover, .pagination .active a:hover { color: var(--k-ffffff); background-color: var(--k-368ad2); border-color: var(--k-368ad2); }
+.pagination li a:active, .pagination li.active a:active { color: var(--k-5c758c); background-color: var(--k-ecedee); border-color: var(--k-b4bac0); }
+.successbox, .errorbox, .warningbox { color: var(--k-ffffff); }
+.success { color: var(--k-228822); }
+.error { color: var(--k-bc2a4d); }
+.successbox { background-color: var(--k-228822); }
+.errorbox { background-color: var(--k-bc2a4d); }
+.warningbox { background-color: var(--k-fca600); }
+.successbox h3, .errorbox h3 { color: var(--k-ffffff); }
+.successbox p, .errorbox p { color: var(--k-ffffff); }
+.errorbox a:link, .errorbox a:active, .errorbox a:visited, .successbox a:link, .successbox a:active, .successbox a:visited { color: var(--k-dbd7d1); }
+.errorbox a:hover, .successbox a:hover { color: var(--k-ffffff); }
+#log-container { background-color: var(--k-ffffff); }
+#log-container.show_log_container { border-color: var(--k-dbd7d1); }
+.notice { background-color: var(--k-62a5cc); }
+#errorpage #content h1 { color: var(--k-df075c); }
+#errorpage #content h2 { border-bottom-color: var(--k-cccccc); color: var(--k-333333); }
+.tooltip { color: var(--k-000000); border-color: var(--k-aaaaaa); }
+.tooltip span.top { background-color: var(--k-efefef); }
+.tooltip span.bottom { color: var(--k-000000); background-color: var(--k-ffffff); }
+.syntaxbg { color: var(--k-ffffff); }
+.syntaxcomment { color: var(--k-ff8000); }
+.syntaxdefault { color: var(--k-0000bb); }
+.syntaxhtml { color: var(--k-000000); }
+.syntaxkeyword { color: var(--k-007700); }
+.syntaxstring { color: var(--k-dd0000); }
+.permissions-category a { background-image: none; }
+.permissions-category a span.tabbg { background-image: none; color: var(--k-536482); }
+.permissions-category a:hover span.tabbg { color: var(--k-dd6900); }
+.permissions-category .activetab a span.tabbg { color: var(--k-333333); }
+.permissions-category .activetab a:hover span.tabbg { color: var(--k-333333); }
+.permissions-category a span.colour { border-color: var(--k-536482); }
+.permissions-category .activetab span.colour { border-color: var(--k-333333); }
+.permissions-category a:hover span.colour { border-color: var(--k-dd6900); }
+.permissions-category .activetab a:hover span.colour { border-color: var(--k-333333); }
+.permissions-preset-yes span.colour, .yes { background-color: var(--k-86f786); }
+.permissions-preset-custom span.colour { background-color: var(--k-b2bbdd); }
+.permissions-preset-never span.colour { background-color: var(--k-dd0000); }
+.permissions-preset-no span.colour, .never { background-color: var(--k-efb0b2); }
+.permissions-panel { background-color: var(--k-cadceb); }
+.permissions-panel th.permissions-name { color: var(--k-536482); }
+.permissions-panel th.row3 { background-color: var(--k-d1d7dc); color: var(--k-536482); }
+.permissions-panel th.row4 { background-color: var(--k-e4e8eb); color: var(--k-536482); }
+.permissions-panel th a:link, .permissions-panel th a:hover, .permissions-panel th a:visited { color: var(--k-ffffff); }
+.permissions-panel td.permissions-yes label:hover { background-color: var(--k-86f786); }
+.permissions-panel td.permissions-no label:hover { background-color: var(--k-efb0b2); }
+.permissions-panel td.permissions-never label:hover { background-color: var(--k-dd0000); }
+@media only screen and (max-width: 700px), only screen and (max-device-width: 700px) {
+	.permissions-category a { background-color: var(--k-d9e5ee); }
+	.permissions-category .activetab a { background-color: var(--k-dd6900); color: var(--k-ffffff); }
+	.permissions-category .activetab span.colour { border-color: var(--k-ffffff); }
+}
+#gallery li { border-color: var(--k-cccccc); background-color: var(--k-ffffff); }
+#gallery li:hover { background-color: var(--k-eeeeee); }
+.dropdown .pointer { border-color: var(--k-b9b9b9) transparent; }
+.dropdown .pointer-inner { border-color: var(--k-ffffff) transparent; }
+.dropdown .dropdown-contents { background-color: var(--k-ffffff); border-color: var(--k-b9b9b9); box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2); }
+.dropdown-up .dropdown-contents { box-shadow: 1px 0 5px rgba(0, 0, 0, 0.2); }
+.roles-options > span { border-color: var(--k-dedede); }
+.roles-highlight { background-color: var(--k-1e90ff); color: var(--k-ffffff); }
+.current-ext { color: var(--k-228822); }
+.outdated-ext { color: var(--k-bc2a4d); }
+.requirements_not_met { background-color: var(--k-bc2a4d); }
+.requirements_not_met dt label, .requirements_not_met dd p { color: var(--k-ffffff); }
+#progress-bar { border-color: var(--k-cecece); }
+#progress-bar #progress-bar-text { color: var(--k-000000); }
+#progress-bar #progress-bar-filler { background-color: var(--k-3c84ad); color: var(--k-ffffff); }
+.send-stats-tile { background-color: var(--k-eff0f2); box-shadow: rgba(0,0,0,0.3) 1px 1px 5px; }
+.send-stats-data-row { background-color: var(--k-f9f9f9); border-color: var(--k-dedede); }
+.send-stats-row > .send-stats-data-row:first-child { background-color: var(--k-d9edf7); }
+.send-stats-settings input[type=checkbox]:checked + label:before { color: var(--k-3c763d); }
+.acp-icon-move-up, .acp-icon-move-down { color: var(--k-4ba5de); }
+.acp-icon-settings { color: var(--k-62c046); }
+.acp-icon-delete { color: var(--k-d74558); }
+.acp-icon-resync { color: var(--k-f69934); }
+.acp-icon-disabled { color: var(--k-d0d0d0); }
+
+/* --- portfolio_acp.css --- */
+.acp-skin ~ h1 { background: linear-gradient(var(--skin-accent, var(--k-115098)), var(--skin-accent, var(--k-115098))) left bottom / 56px 3px no-repeat; }
+.acp-skin ~ h3, .acp-skin ~ form > h3 { border-left-color: var(--k-115098); color: var(--k-2e4057); }
+.acp-skin ~ fieldset, .acp-skin ~ * fieldset, .acp-skin ~ .panel { border-color: var(--k-d5dbe3); background-color: var(--k-ffffff); box-shadow: 0 2px 0 var(--k-c9d0da), 0 4px 10px color-mix(in srgb, var(--k-2e4057) 6%, transparent); }
+.acp-skin ~ fieldset > legend, .acp-skin ~ * fieldset > legend { border-color: var(--k-c9d0da); background-color: var(--k-ffffff); color: var(--skin-accent-dark, var(--k-115098)); }
+.acp-skin ~ fieldset.submit-buttons, .acp-skin ~ * fieldset.submit-buttons, .acp-skin ~ p.submit-buttons, .acp-skin ~ * p.submit-buttons { border-color: var(--k-d5dbe3); background-color: var(--k-ffffff); box-shadow: 0 2px 0 var(--k-c9d0da); }
+.acp-skin ~ fieldset dl + dl, .acp-skin ~ * fieldset dl + dl { border-top-color: var(--k-eef1f5); }
+.acp-skin ~ fieldset dt, .acp-skin ~ * fieldset dt { border-right-color: var(--k-e2e7ed); }
+.acp-skin ~ fieldset dt span, .acp-skin ~ * fieldset dt span { color: var(--k-6b7684); }
+.acp-skin ~ * input[type="text"], .acp-skin ~ * input[type="email"], .acp-skin ~ * input[type="number"], .acp-skin ~ * input[type="date"], .acp-skin ~ * input[type="url"], .acp-skin ~ * select, .acp-skin ~ * textarea { border-color: var(--k-b9c2ce); }
+.acp-skin ~ * input[type="radio"], .acp-skin ~ * input[type="checkbox"] { accent-color: var(--skin-accent, var(--k-115098)); }
+.acp-skin ~ table, .acp-skin ~ * table.table1, .acp-skin ~ * table.zebra-table { border-color: var(--k-c9d0da); box-shadow: 0 2px 0 var(--k-c9d0da); }
+.acp-skin ~ details.skin-details, .acp-skin ~ * details.skin-details { border-color: var(--k-d5dbe3); background-color: var(--k-ffffff); box-shadow: 0 2px 0 var(--k-c9d0da); }
+.acp-skin ~ details.skin-details > summary, .acp-skin ~ * details.skin-details > summary { color: var(--skin-accent-dark, var(--k-115098)); }
+.acp-skin ~ * .skin-ok { background-color: var(--k-d4edda); color: var(--k-1e6b34); }
+.acp-skin ~ * .skin-failed { background-color: var(--k-f8d7da); color: var(--k-8a1c27); }
+.acp-skin ~ * .skin-pending { background-color: var(--k-eef1f5); color: var(--k-55606e); }
+.acp-skin ~ * .skin-detail, .acp-skin ~ * .skin-days { color: var(--k-6b7684); }
+.acp-skin ~ .skin-note, .acp-skin ~ * .skin-note { border-left-color: var(--k-115098); background-color: var(--k-e8f4fd); }
+.acp-skin ~ .skin-note-ok, .acp-skin ~ * .skin-note-ok { border-left-color: var(--k-2e7d32); background-color: var(--k-d4edda); }
+.acp-skin ~ .skin-note-warn, .acp-skin ~ * .skin-note-warn { border-left-color: var(--k-c9a227); background-color: var(--k-fff3cd); }
+.acp-skin ~ .skin-note-error,.acp-skin ~ * .skin-note-error { border-left-color: var(--k-c94f4f); background-color: var(--k-f8d7da); }
+.acp-skin ~ .pf-acp-cards > div { border-color: var(--k-d5dbe3); background-color: var(--k-ffffff); box-shadow: 0 2px 0 var(--k-c9d0da), 0 4px 10px color-mix(in srgb, var(--k-2e4057) 6%, transparent); color: var(--k-6b7684); }
+.acp-skin ~ .pf-acp-cards b { color: var(--skin-accent-dark, var(--k-115098)); }
+.acp-skin ~ .pf-acp-cards > .is-warn b { color: var(--k-a07800); }
+.acp-skin ~ * .skin-info { background-color: var(--k-e8f4fd); color: var(--k-115098); }
+.acp-skin ~ * .skin-warn { background-color: var(--k-fff3cd); color: var(--k-7a5b00); }
+.acp-skin ~ * td.pf-acp-actions a.is-danger { color: var(--k-c94f4f); }
+.acp-skin ~ * .pf-acp-thumb { box-shadow: 0 1px 3px color-mix(in srgb, var(--k-2e4057) 25%, transparent); }
+.acp-skin ~ * .pf-acp-logo { background: repeating-conic-gradient(var(--k-dde3ea) 0 25%, var(--k-ffffff) 0 50%) 0 0 / 16px 16px; }
+.acp-skin ~ * input[type="range"] { accent-color: var(--skin-accent, var(--k-115098)); }
+.acp-skin ~ * input[type="color"] { border-color: var(--k-b9c2ce); }
+.acp-skin ~ * code { background-color: var(--k-eef1f5); }
+.acp-skin ~ * .pf-acp-pagination a, .acp-skin ~ * .pf-acp-pagination strong { border-color: var(--k-d5dbe3); }
+.acp-skin ~ * .pf-acp-pagination strong { border-color: var(--skin-accent, var(--k-115098)); background-color: var(--k-115098); color: var(--k-ffffff); }
+.acp-skin ~ * button.button1, .acp-skin ~ * button.button2 { border-color: var(--k-666666); background-image: none; background-color: var(--k-efefef); color: var(--k-000000); }
+.acp-skin ~ * button.button1:hover, .acp-skin ~ * button.button2:hover { border-color: var(--k-bc2a4d); color: var(--k-bc2a4d); }
+.acp-skin ~ * .button1.is-danger, .acp-skin ~ * .button2.is-danger { border-color: var(--k-c94f4f); color: var(--k-a12f2f); }
+.acp-skin ~ * .pf-acp-progress { background-color: var(--k-eef1f5); }
+.acp-skin ~ * .pf-acp-progress > span { background-color: var(--k-115098); }
+.acp-skin ~ * .pf-acp-choices small { color: var(--k-6b7684); }
+.acp-skin ~ * .pf-acp-failed { border-left-color: var(--k-c0392b); background-color: color-mix(in srgb, var(--k-c0392b) 6%, transparent); }
+.acp-skin ~ * .pf-acp-bulk { border-color: var(--k-d5dbe3); border-left-color: var(--k-115098); background-color: var(--k-f6f8fb); }
+.acp-skin ~ * .pf-acp-bulk__count { color: var(--k-6b7684); }
+.acp-skin ~ * .pf-acp-bulk__hint { color: var(--k-6b7684); }

@@ -1,0 +1,62 @@
+{% include 'overall_header.html' %}
+
+{% INCLUDECSS '@verturin_clarte/acp_clarte.css' %}
+
+<h1>{{ lang('ACP_CLARTE_FORUMS') }}</h1>
+<p>{{ lang('ACP_CLARTE_FORUMS_EXPLAIN') }}</p>
+<div class="clarte-info"><p>{{ lang('ACP_CLARTE_FORUMS_STYLE_NOTE', U_ACP_FORUMS) }}</p></div>
+{% if CLARTE_OTHER_STYLES %}
+	<div class="errorbox"><p>{{ lang('ACP_CLARTE_FORUMS_OTHER_STYLES', CLARTE_OTHER_STYLES, U_ACP_FORUMS) }}</p></div>
+{% endif %}
+
+{% if not CLARTE_MODEL_OPTIONS|length %}
+	<div class="clarte-info"><p>{{ lang('ACP_CLARTE_FORUMS_NO_MODELS') }} <a href="{{ U_CLARTE_MODELS }}">{{ lang('ACP_CLARTE_MODELS') }}</a></p></div>
+{% endif %}
+
+<form id="clarte_forums" method="post" action="{{ U_ACTION }}">
+	<table class="table1 zebra-table clarte-forums">
+		<thead>
+			<tr>
+				<th>{{ lang('FORUM') }}</th>
+				<th class="clarte-forums__choice">{{ lang('ACP_CLARTE_FORUMS_MODEL') }}</th>
+				<th class="clarte-forums__result">{{ lang('ACP_CLARTE_FORUMS_RESULT') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for f in forums %}
+			<tr>
+				<td>
+					<span class="clarte-forums__name{% if f.S_CAT %} is-cat{% endif %}" style="padding-left: {{ f.DEPTH * 22 }}px;">{% if f.DEPTH %}<span class="clarte-forums__branch" aria-hidden="true">└</span> {% endif %}{{ f.NAME }}</span>
+					{% if f.OTHER_STYLE %}<span class="clarte-forums__warn">{{ lang('ACP_CLARTE_FORUMS_FORCED_STYLE', f.OTHER_STYLE) }}</span>{% endif %}
+				</td>
+				<td class="clarte-forums__choice">
+					<select name="forum_model[{{ f.ID }}]" aria-label="{{ f.NAME }}">
+						<option value="0"{% if f.VALUE == 0 %} selected="selected"{% endif %}>{% if f.PARENT_MODEL %}{{ lang('ACP_CLARTE_FORUMS_INHERIT_FROM', f.PARENT_MODEL) }}{% else %}{{ lang('ACP_CLARTE_FORUMS_INHERIT') }}{% endif %}</option>
+						<option value="{{ CLARTE_GENERAL }}"{% if f.VALUE == CLARTE_GENERAL %} selected="selected"{% endif %}>{{ lang('ACP_CLARTE_FORUMS_GENERAL') }}</option>
+						{% for m in CLARTE_MODEL_OPTIONS %}
+							<option value="{{ m.ID }}"{% if f.VALUE == m.ID %} selected="selected"{% endif %}>{{ m.NAME }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td class="clarte-forums__result">
+					{% if f.MODEL_NAME %}
+						<span class="clarte-models__swatches" aria-hidden="true"><i style="background: linear-gradient(135deg, {{ f.FROM }}, {{ f.TO }});"></i><i style="background: {{ f.ACCENT }};"></i></span>
+						{{ f.MODEL_NAME }}{% if f.S_INHERITED %} <span class="clarte-forums__from">({{ lang('ACP_CLARTE_FORUMS_FROM', f.INHERITED_FROM) }})</span>{% endif %}
+					{% else %}
+						<span class="clarte-forums__from">{{ lang('ACP_CLARTE_FORUMS_GENERAL_SHORT') }}</span>
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<p class="clarte-links"><a href="{{ U_CLARTE_MODELS }}">{{ lang('ACP_CLARTE_MODELS') }}</a></p>
+
+{% include 'overall_footer.html' %}

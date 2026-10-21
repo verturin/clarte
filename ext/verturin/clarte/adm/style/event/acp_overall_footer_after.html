@@ -1,0 +1,29 @@
+{% if CLARTE_ACP %}
+<script>
+(function () {
+	var header = document.getElementById('page-header');
+	if (!header) { return; }
+	var d = document.documentElement, order = ['auto', 'light', 'dark'],
+		icons = { auto: 'fa-adjust', light: 'fa-sun-o', dark: 'fa-moon-o' },
+		labels = { auto: '{{ lang('CLARTE_MODE_AUTO')|e('js') }}', light: '{{ lang('CLARTE_MODE_LIGHT')|e('js') }}', dark: '{{ lang('CLARTE_MODE_DARK')|e('js') }}' },
+		title = '{{ lang('CLARTE_MODE_TITLE')|e('js') }}',
+		btn = document.createElement('button');
+	btn.type = 'button';
+	btn.className = 'clarte-acp-mode';
+	function paint(m) {
+		btn.innerHTML = '<i class="icon fa ' + icons[m] + ' fa-fw" aria-hidden="true"></i><span></span>';
+		btn.lastChild.textContent = labels[m];
+		btn.title = title + ' (' + labels[m] + ')';
+	}
+	paint(d.getAttribute('data-clarte-mode') || 'auto');
+	btn.addEventListener('click', function () {
+		var m = order[(order.indexOf(d.getAttribute('data-clarte-mode') || 'auto') + 1) % 3];
+		d.setAttribute('data-clarte-mode', m);
+		if (m === 'auto') { d.removeAttribute('data-theme'); } else { d.setAttribute('data-theme', m); }
+		try { window.localStorage.setItem('clarte_mode', m); } catch (e) {}
+		paint(m);
+	});
+	header.appendChild(btn);
+})();
+</script>
+{% endif %}

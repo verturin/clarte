@@ -1,0 +1,12 @@
+{% if CLARTE_ALLOW_TOGGLE %}
+{% set clarte_fr = S_USER_LANG starts with 'fr' %}
+<li class="rightside clarte-mode-toggle" data-skip-responsive="true">
+	<a href="#" role="menuitem" class="clarte-mode-button"
+		data-label-auto="{{ clarte_fr ? 'Automatique' : 'Automatic' }}"
+		data-label-light="{{ clarte_fr ? 'Clair' : 'Light' }}"
+		data-label-dark="{{ clarte_fr ? 'Sombre' : 'Dark' }}"
+		data-title="{{ clarte_fr ? 'Apparence : cliquer pour changer' : 'Appearance: click to change' }}">
+		<i class="icon fa-adjust fa-fw" aria-hidden="true"></i><span class="clarte-mode-label">{{ clarte_fr ? 'Apparence' : 'Appearance' }}</span>
+	</a>
+</li>
+{% endif %}

@@ -1,0 +1,26 @@
+{% if CLARTE_ALLOW_TOGGLE %}
+<script>
+(function () {
+	var d = document.documentElement, order = ['auto', 'light', 'dark'], icons = { auto: 'fa-adjust', light: 'fa-sun-o', dark: 'fa-moon-o' };
+	function paint(btn, m) {
+		var i = btn.querySelector('.icon'), l = btn.querySelector('.clarte-mode-label');
+		if (i) { i.className = 'icon fa-fw ' + icons[m]; }
+		if (l) { l.textContent = btn.getAttribute('data-label-' + m); }
+		btn.setAttribute('title', btn.getAttribute('data-title') + ' (' + btn.getAttribute('data-label-' + m) + ')');
+		btn.setAttribute('aria-label', btn.getAttribute('title'));
+	}
+	var buttons = document.querySelectorAll('.clarte-mode-button');
+	Array.prototype.forEach.call(buttons, function (btn) {
+		paint(btn, d.getAttribute('data-clarte-mode') || 'auto');
+		btn.addEventListener('click', function (e) {
+			e.preventDefault();
+			var m = order[(order.indexOf(d.getAttribute('data-clarte-mode') || 'auto') + 1) % 3];
+			d.setAttribute('data-clarte-mode', m);
+			if (m === 'auto') { d.removeAttribute('data-theme'); } else { d.setAttribute('data-theme', m); }
+			try { window.localStorage.setItem('clarte_mode', m); } catch (err) {}
+			Array.prototype.forEach.call(buttons, function (b) { paint(b, m); });
+		});
+	});
+})();
+</script>
+{% endif %}

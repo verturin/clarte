@@ -1,0 +1,22 @@
+/*  Clarté — style enfant de prosilver
+    --------------------------------------------------------------
+	Auteur : verturin · Licence GPL-2.0
+	La mise en page reste celle de prosilver (compatibilité totale avec les extensions) ;
+	les couleurs sont des variables (clair / sombre, couleur principale réglable) et
+	clarte.css apporte le nouveau dessin.
+    --------------------------------------------------------------
+*/
+@import url("../../prosilver/theme/normalize.css?v=3.3");
+@import url("../../prosilver/theme/base.css?v=3.3");
+@import url("../../prosilver/theme/utilities.css?v=3.3");
+@import url("../../prosilver/theme/common.css?v=3.3");
+@import url("../../prosilver/theme/links.css?v=3.3");
+@import url("../../prosilver/theme/content.css?v=3.3");
+@import url("../../prosilver/theme/buttons.css?v=3.3");
+@import url("../../prosilver/theme/cp.css?v=3.3");
+@import url("../../prosilver/theme/forms.css?v=3.3");
+@import url("../../prosilver/theme/icons.css?v=3.3");
+@import url("tokens.css?v=1.0.0");
+@import url("colours.css?v=1.0.0");
+@import url("../../prosilver/theme/responsive.css?v=3.3");
+@import url("clarte.css?v=1.4.1");

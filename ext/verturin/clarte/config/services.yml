@@ -1,0 +1,51 @@
+services:
+    verturin.clarte.listener:
+        class: verturin\clarte\event\listener
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '%core.root_path%'
+            - '@request'
+            - '@verturin.clarte.models'
+            - '@verturin.clarte.forum_models'
+        tags:
+            - { name: event.listener }
+
+    verturin.clarte.models:
+        class: verturin\clarte\core\models
+        arguments:
+            - '@config_text'
+            - '@cache.driver'
+
+    verturin.clarte.forum_models:
+        class: verturin\clarte\core\forum_models
+        arguments:
+            - '@config_text'
+            - '@dbal.conn'
+            - '@cache.driver'
+            - '%tables.forums%'
+
+    verturin.clarte.model_styles:
+        class: verturin\clarte\core\model_styles
+        arguments:
+            - '@config_text'
+            - '@config'
+            - '@dbal.conn'
+            - '@cache.driver'
+            - '%core.root_path%'
+            - '%tables.styles%'
+            - '%tables.users%'
+
+    verturin.clarte.acp_controller:
+        class: verturin\clarte\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@verturin.clarte.models'
+            - '@verturin.clarte.forum_models'
+            - '@verturin.clarte.model_styles'

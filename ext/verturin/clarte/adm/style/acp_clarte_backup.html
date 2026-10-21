@@ -1,0 +1,57 @@
+{% include 'overall_header.html' %}
+
+{% INCLUDECSS '@verturin_clarte/acp_clarte.css' %}
+
+<h1>{{ lang('ACP_CLARTE_BACKUP') }}</h1>
+<p>{{ lang('ACP_CLARTE_BACKUP_EXPLAIN') }}</p>
+
+{% if S_ERROR %}
+	<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>
+{% endif %}
+
+<fieldset>
+	<legend>{{ lang('ACP_CLARTE_BACKUP_SAVE') }}</legend>
+	<dl>
+		<dt><label>{{ lang('ACP_CLARTE_BACKUP_CONTENT') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_BACKUP_SAVE_EXPLAIN') }}</span></dt>
+		<dd>
+			<p class="clarte-backup__current">
+				<span class="clarte-models__swatches" aria-hidden="true"><i style="background: linear-gradient(135deg, {{ CLARTE_HEADER_FROM }}, {{ CLARTE_HEADER_TO }});"></i><i style="background: {{ CLARTE_ACCENT }};"></i></span>
+				{{ lang('ACP_CLARTE_BACKUP_SETTINGS') }} ({{ CLARTE_SUMMARY }})<br>
+				{{ lang('ACP_CLARTE_BACKUP_MODELS', CLARTE_MODEL_COUNT) }}
+			</p>
+			<a href="{{ U_DOWNLOAD }}" class="button1 clarte-button-link">{{ lang('ACP_CLARTE_BACKUP_DOWNLOAD') }}</a>
+		</dd>
+	</dl>
+</fieldset>
+
+<form id="clarte_restore" method="post" action="{{ U_ACTION }}" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{{ lang('ACP_CLARTE_RESTORE') }}</legend>
+		<dl>
+			<dt><label for="clarte_file">{{ lang('ACP_CLARTE_FILE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_RESTORE_FILE_EXPLAIN', CLARTE_MAX_UPLOAD) }}</span></dt>
+			<dd><input type="file" id="clarte_file" name="clarte_file" accept=".json,application/json" required class="inputbox autowidth"></dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('ACP_CLARTE_RESTORE_WHAT') }}{{ lang('COLON') }}</label></dt>
+			<dd class="clarte-checks">
+				<label><input type="checkbox" class="radio" name="restore_settings" value="1" checked="checked"> {{ lang('ACP_CLARTE_RESTORE_SETTINGS') }}</label>
+				<label><input type="checkbox" class="radio" name="restore_models" value="1" checked="checked"> {{ lang('ACP_CLARTE_RESTORE_MODELS') }}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('ACP_CLARTE_RESTORE_MODELS_MODE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_RESTORE_MODELS_MODE_EXPLAIN') }}</span></dt>
+			<dd class="clarte-checks">
+				<label><input type="radio" class="radio" name="models_mode" value="add" checked="checked"> {{ lang('ACP_CLARTE_RESTORE_MODE_ADD') }}</label>
+				<label><input type="radio" class="radio" name="models_mode" value="replace"> {{ lang('ACP_CLARTE_RESTORE_MODE_REPLACE') }}</label>
+			</dd>
+		</dl>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" name="restore" value="{{ lang('ACP_CLARTE_RESTORE_BUTTON') }}" onclick="return confirm('{{ lang('ACP_CLARTE_RESTORE_CONFIRM')|e('js') }}');">
+		</p>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<p class="clarte-links"><a href="{{ U_CLARTE_MODELS }}">{{ lang('ACP_CLARTE_MODELS') }}</a></p>
+
+{% include 'overall_footer.html' %}

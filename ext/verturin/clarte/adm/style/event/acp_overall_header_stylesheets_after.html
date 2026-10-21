@@ -1,0 +1,15 @@
+{% if CLARTE_ACP %}
+{# Clarté : habillage de toute l'administration (ACP › Extensions › Style Clarté) #}
+<link href="{{ CLARTE_ACP_CSS_PATH }}clarte_admin_colours.css?assets_version={{ CLARTE_ASSETS_VERSION }}" rel="stylesheet">
+<link href="{{ CLARTE_ACP_CSS_PATH }}clarte_admin.css?assets_version={{ CLARTE_ASSETS_VERSION }}" rel="stylesheet">
+{% if CLARTE_STYLE_VARS %}<style id="clarte-vars">:root{ {{ CLARTE_STYLE_VARS }} }</style>{% endif %}
+<script>
+(function () {
+	var d = document.documentElement, m = null;
+	try { m = window.localStorage.getItem('clarte_mode'); } catch (e) {}
+	if (m !== 'auto' && m !== 'light' && m !== 'dark') { m = '{{ CLARTE_DEFAULT_MODE ?: 'auto' }}'; }
+	if (m === 'light' || m === 'dark') { d.setAttribute('data-theme', m); }
+	d.setAttribute('data-clarte-mode', m);
+})();
+</script>
+{% endif %}

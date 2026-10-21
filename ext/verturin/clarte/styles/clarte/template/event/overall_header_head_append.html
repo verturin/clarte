@@ -1,0 +1,17 @@
+{# Clarté : couleurs réglées dans l'ACP (ACP › Style Clarté) et choix clair / sombre, avant l'affichage pour éviter tout clignement #}
+{% if CLARTE_STYLE_VARS %}<style id="clarte-vars">:root{ {{ CLARTE_STYLE_VARS }} }</style>{% endif %}
+{# Date sur l'accueil (prosilver index_body.html) : p.time.rightside = dernière visite (membre connecté), l'autre p.time = date du jour.
+   Sans « > » : les lignes restent visées même si une extension les place dans un autre bloc. #}
+{% if CLARTE_INDEX_TIME == 'none' %}<style>body.section-index p.responsive-center.time { display: none !important; }</style>
+{% elseif CLARTE_INDEX_TIME == 'now' %}<style>body.section-index p.responsive-center.time.rightside { display: none !important; }</style>
+{% elseif CLARTE_INDEX_TIME == 'last' %}<style>body.section-index p.responsive-center.time:not(.rightside) { display: none !important; }</style>
+{% endif %}
+<script>
+(function () {
+	var d = document.documentElement, def = '{{ CLARTE_DEFAULT_MODE ?: 'auto' }}', allow = {{ CLARTE_ALLOW_TOGGLE ? 'true' : 'false' }}, m = null;
+	if (allow) { try { m = window.localStorage.getItem('clarte_mode'); } catch (e) {} }
+	if (m !== 'auto' && m !== 'light' && m !== 'dark') { m = def; }
+	if (m === 'light' || m === 'dark') { d.setAttribute('data-theme', m); }
+	d.setAttribute('data-clarte-mode', m);
+})();
+</script>

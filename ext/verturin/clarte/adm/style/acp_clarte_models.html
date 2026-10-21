@@ -1,0 +1,84 @@
+{% include 'overall_header.html' %}
+
+{% INCLUDECSS '@verturin_clarte/acp_clarte.css' %}
+
+<h1>{{ lang('ACP_CLARTE_MODELS') }}</h1>
+<p>{{ lang('ACP_CLARTE_MODELS_EXPLAIN') }}</p>
+<p>{{ lang('ACP_CLARTE_MODELS_STYLES_EXPLAIN') }}</p>
+
+{% if S_ERROR %}
+	<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>
+{% endif %}
+
+{% if models|length %}
+<table class="table1 zebra-table clarte-models">
+	<thead>
+		<tr>
+			<th>{{ lang('ACP_CLARTE_MODEL_NAME') }}</th>
+			<th class="clarte-models__summary">{{ lang('ACP_CLARTE_MODEL_SETTINGS') }}</th>
+			<th class="clarte-models__date">{{ lang('ACP_CLARTE_MODEL_UPDATED_ON') }}</th>
+			<th class="clarte-models__actions">{{ lang('ACTION') }}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for m in models %}
+		<tr>
+			<td>
+				<span class="clarte-models__swatches" aria-hidden="true">
+					<i style="background: linear-gradient(135deg, {{ m.FROM }}, {{ m.TO }});"></i><i style="background: {{ m.ACCENT }};"></i><i style="background: {{ m.CAT_BG }};"></i>
+				</span>
+				<strong>{{ m.NAME }}</strong>
+				{% if m.S_CURRENT %}<span class="clarte-models__current">{{ lang('ACP_CLARTE_MODEL_IN_USE') }}</span>{% endif %}
+				{% if m.S_STYLE %}<span class="clarte-models__style">{{ lang('ACP_CLARTE_MODEL_STYLE_INFO', m.STYLE_MEMBERS, m.STYLE_NAME) }}</span>{% endif %}
+				{% if m.FORUMS %}<span class="clarte-models__forums">{{ lang('ACP_CLARTE_MODEL_FORUMS_INFO', m.FORUMS) }}</span>{% endif %}
+			</td>
+			<td class="clarte-models__summary">{{ m.SUMMARY }}</td>
+			<td class="clarte-models__date">{{ m.UPDATED }}</td>
+			<td class="clarte-models__actions">
+				<a href="{{ m.U_APPLY }}" class="clarte-action clarte-action--main">{{ lang('ACP_CLARTE_MODEL_APPLY') }}</a>
+				<a href="{{ m.U_EDIT }}" class="clarte-action">{{ lang('EDIT') }}</a>
+				<a href="{{ m.U_DUPLICATE }}" class="clarte-action">{{ lang('ACP_CLARTE_MODEL_DUPLICATE') }}</a>
+				<a href="{{ m.U_EXPORT }}" class="clarte-action">{{ lang('ACP_CLARTE_MODEL_EXPORT') }}</a>
+				{% if m.S_STYLE %}<a href="{{ m.U_STYLE_DELETE }}" class="clarte-action">{{ lang('ACP_CLARTE_STYLE_REMOVE') }}</a>{% else %}<a href="{{ m.U_STYLE_CREATE }}" class="clarte-action">{{ lang('ACP_CLARTE_STYLE_ADD') }}</a>{% endif %}
+				<a href="{{ m.U_DELETE }}" class="clarte-action clarte-action--danger">{{ lang('DELETE') }}</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<p class="clarte-models__count">{{ lang('ACP_CLARTE_MODEL_COUNT', CLARTE_MODEL_COUNT, CLARTE_MODEL_MAX) }} · <a href="{{ U_EXPORT_ALL }}">{{ lang('ACP_CLARTE_MODELS_EXPORT_ALL') }}</a></p>
+{% else %}
+<div class="clarte-info"><p>{{ lang('ACP_CLARTE_MODELS_EMPTY') }}</p></div>
+{% endif %}
+
+<form id="clarte_models_new" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ lang('ACP_CLARTE_MODEL_NEW') }}</legend>
+		<dl>
+			<dt><label for="clarte_model_name">{{ lang('ACP_CLARTE_MODEL_NAME') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_MODEL_NEW_EXPLAIN') }}</span></dt>
+			<dd>
+				<input type="text" id="clarte_model_name" name="clarte_model_name" maxlength="{{ CLARTE_NAME_MAX }}" required class="inputbox autowidth" size="30" placeholder="{{ lang('ACP_CLARTE_MODEL_NAME_PLACEHOLDER') }}">
+				<input class="button1" type="submit" name="save_current" value="{{ lang('ACP_CLARTE_SAVE_MODEL') }}">
+			</dd>
+		</dl>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<form id="clarte_models_import" method="post" action="{{ U_ACTION }}" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{{ lang('ACP_CLARTE_MODELS_IMPORT') }}</legend>
+		<dl>
+			<dt><label for="clarte_file">{{ lang('ACP_CLARTE_FILE') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CLARTE_MODELS_IMPORT_EXPLAIN') }}</span></dt>
+			<dd>
+				<input type="file" id="clarte_file" name="clarte_file" accept=".json,application/json" required class="inputbox autowidth">
+				<input class="button2" type="submit" name="import" value="{{ lang('ACP_CLARTE_IMPORT') }}">
+			</dd>
+		</dl>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+<p class="clarte-links"><a href="{{ U_CLARTE_SETTINGS }}">{{ lang('ACP_CLARTE_SETTINGS') }}</a> · <a href="{{ U_CLARTE_FORUMS }}">{{ lang('ACP_CLARTE_FORUMS') }}</a> · <a href="{{ U_CLARTE_BACKUP }}">{{ lang('ACP_CLARTE_BACKUP') }}</a></p>
+
+{% include 'overall_footer.html' %}
