@@ -23,7 +23,7 @@
 	<div class="errorbox"><h3>{{ lang('WARNING') }}</h3><p>{{ ERROR_MSG }}</p></div>
 {% endif %}
 
-<form id="clarte_settings" method="post" action="{{ U_ACTION }}">
+<form id="clarte_settings" method="post" action="{{ U_ACTION }}" enctype="multipart/form-data">
 	<div class="clarte-layout">
 		<div class="clarte-form">
 			{% if S_MODEL_EDIT %}
@@ -129,6 +129,30 @@
 					</dd>
 				</dl>
 				<dl>
+					<dt><label for="clarte_acp_tabs">{{ lang('CLARTE_ACP_TABS') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_ACP_TABS_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_acp_tabs" name="clarte_acp_tabs" value="1"{% if CLARTE_ACP_TABS_ENABLED %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_acp_tabs" value="0"{% if not CLARTE_ACP_TABS_ENABLED %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_text_size">{{ lang('CLARTE_TEXT_SIZE') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_TEXT_SIZE_EXPLAIN') }}</span></dt>
+					<dd>
+						<div class="clarte-range">
+							<input type="range" id="clarte_text_size" name="clarte_text_size" min="{{ CLARTE_TEXT_MIN }}" max="{{ CLARTE_TEXT_MAX }}" step="1" value="{{ CLARTE_TEXT_SIZE }}">
+							<output for="clarte_text_size" id="clarte_text_size_out">{{ CLARTE_TEXT_SIZE }} %</output>
+							<button type="button" class="button2" id="clarte_text_size_reset">100 %</button>
+						</div>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_text_allow">{{ lang('CLARTE_TEXT_ALLOW') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_TEXT_ALLOW_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_text_allow" name="clarte_text_allow" value="1"{% if CLARTE_TEXT_ALLOW %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_text_allow" value="0"{% if not CLARTE_TEXT_ALLOW %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				<dl>
 					<dt><label for="clarte_index_time">{{ lang('CLARTE_INDEX_TIME') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_INDEX_TIME_EXPLAIN') }}</span></dt>
 					<dd>
 						<select id="clarte_index_time" name="clarte_index_time">
@@ -153,6 +177,165 @@
 					<dd><input type="number" id="clarte_radius" name="clarte_radius" min="0" max="20" value="{{ CLARTE_RADIUS }}" class="tiny"> px</dd>
 				</dl>
 			</fieldset>
+			<fieldset class="clarte-images">
+				<legend>{{ lang('ACP_CLARTE_IMAGES') }}</legend>
+				<p class="clarte-fieldset-explain">{{ lang('ACP_CLARTE_IMAGES_EXPLAIN', CLARTE_IMAGE_MAX) }}</p>
+				<h4 class="clarte-subtitle">{{ lang('ACP_CLARTE_IMAGES_PAGE') }}</h4>
+				{% for slot in bg_slots %}
+				<dl class="clarte-image-slot{% if slot.S_DARK %} clarte-dark-slot{% endif %}">
+					<dt><label for="{{ slot.KEY }}">{{ slot.LABEL }}{{ lang('COLON') }}</label><br><span>{{ slot.EXPLAIN }}</span></dt>
+					<dd>
+						<div class="clarte-image-pick">
+							<span class="clarte-thumb" id="{{ slot.KEY }}_thumb"{% if slot.URL %} style="background-image: url('{{ slot.URL }}');"{% endif %}></span>
+							<div>
+								<select id="{{ slot.KEY }}" name="{{ slot.KEY }}" class="clarte-image-select">
+									<option value="" data-url="">{{ lang('ACP_CLARTE_IMAGE_NONE') }}</option>
+									{% for img in slot.OPTIONS %}
+										<option value="{{ img.NAME }}" data-url="{{ img.URL }}"{% if img.NAME == slot.VALUE %} selected="selected"{% endif %}>{{ img.LABEL }}</option>
+									{% endfor %}
+								</select>
+								<br><label class="clarte-upload">{{ lang('ACP_CLARTE_IMAGE_UPLOAD') }}{{ lang('COLON') }} <input type="file" name="upload_{{ slot.KEY }}" id="upload_{{ slot.KEY }}" accept="{{ slot.ACCEPT }}" data-for="{{ slot.KEY }}"></label>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				{% endfor %}
+				<dl>
+					<dt><label for="clarte_bg_mode">{{ lang('CLARTE_BG_MODE') }}{{ lang('COLON') }}</label>{% if lang('CLARTE_BG_MODE_EXPLAIN') != 'CLARTE_BG_MODE_EXPLAIN' %}<br><span>{{ lang('CLARTE_BG_MODE_EXPLAIN') }}</span>{% endif %}</dt>
+					<dd>
+						<select id="clarte_bg_mode" name="clarte_bg_mode">
+							{% for v in CLARTE_BG_MODES %}
+								<option value="{{ v }}"{% if CLARTE_BG_MODE == v %} selected="selected"{% endif %}>{{ lang('CLARTE_BG_MODE_' ~ v|upper) }}</option>
+							{% endfor %}
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_bg_position">{{ lang('CLARTE_BG_POSITION') }}{{ lang('COLON') }}</label>{% if lang('CLARTE_BG_POSITION_EXPLAIN') != 'CLARTE_BG_POSITION_EXPLAIN' %}<br><span>{{ lang('CLARTE_BG_POSITION_EXPLAIN') }}</span>{% endif %}</dt>
+					<dd>
+						<select id="clarte_bg_position" name="clarte_bg_position">
+							{% for v in CLARTE_POSITIONS %}
+								<option value="{{ v }}"{% if CLARTE_BG_POSITION == v %} selected="selected"{% endif %}>{{ lang('CLARTE_POSITION_' ~ v|upper) }}</option>
+							{% endfor %}
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_bg_fixed">{{ lang('CLARTE_BG_FIXED') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_BG_FIXED_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_bg_fixed" name="clarte_bg_fixed" value="1"{% if CLARTE_BG_FIXED %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_bg_fixed" value="0"{% if not CLARTE_BG_FIXED %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_bg_overlay">{{ lang('CLARTE_BG_OVERLAY') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_BG_OVERLAY_EXPLAIN') }}</span></dt>
+					<dd>
+						<div class="clarte-range">
+							<input type="range" id="clarte_bg_overlay" name="clarte_bg_overlay" min="{{ CLARTE_RANGES.clarte_bg_overlay[0] }}" max="{{ CLARTE_RANGES.clarte_bg_overlay[1] }}" step="1" value="{{ CLARTE_BG_OVERLAY }}" data-unit=" %">
+							<output for="clarte_bg_overlay" id="clarte_bg_overlay_out">{{ CLARTE_BG_OVERLAY }} %</output>
+						</div>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_bg_blur">{{ lang('CLARTE_BG_BLUR') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_BG_BLUR_EXPLAIN') }}</span></dt>
+					<dd>
+						<div class="clarte-range">
+							<input type="range" id="clarte_bg_blur" name="clarte_bg_blur" min="{{ CLARTE_RANGES.clarte_bg_blur[0] }}" max="{{ CLARTE_RANGES.clarte_bg_blur[1] }}" step="1" value="{{ CLARTE_BG_BLUR }}" data-unit=" px">
+							<output for="clarte_bg_blur" id="clarte_bg_blur_out">{{ CLARTE_BG_BLUR }} px</output>
+						</div>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_bg_glass">{{ lang('CLARTE_BG_GLASS') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_BG_GLASS_EXPLAIN') }}</span></dt>
+					<dd>
+						<div class="clarte-range">
+							<input type="range" id="clarte_bg_glass" name="clarte_bg_glass" min="{{ CLARTE_RANGES.clarte_bg_glass[0] }}" max="{{ CLARTE_RANGES.clarte_bg_glass[1] }}" step="1" value="{{ CLARTE_BG_GLASS }}" data-unit=" %">
+							<output for="clarte_bg_glass" id="clarte_bg_glass_out">{{ CLARTE_BG_GLASS }} %</output>
+						</div>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_bg_mobile">{{ lang('CLARTE_BG_MOBILE') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_BG_MOBILE_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_bg_mobile" name="clarte_bg_mobile" value="1"{% if CLARTE_BG_MOBILE %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_bg_mobile" value="0"{% if not CLARTE_BG_MOBILE %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				<h4 class="clarte-subtitle">{{ lang('ACP_CLARTE_IMAGES_HEADER') }}</h4>
+				{% for slot in header_slots %}
+				<dl class="clarte-image-slot{% if slot.S_DARK %} clarte-dark-slot{% endif %}">
+					<dt><label for="{{ slot.KEY }}">{{ slot.LABEL }}{{ lang('COLON') }}</label><br><span>{{ slot.EXPLAIN }}</span></dt>
+					<dd>
+						<div class="clarte-image-pick">
+							<span class="clarte-thumb" id="{{ slot.KEY }}_thumb"{% if slot.URL %} style="background-image: url('{{ slot.URL }}');"{% endif %}></span>
+							<div>
+								<select id="{{ slot.KEY }}" name="{{ slot.KEY }}" class="clarte-image-select">
+									<option value="" data-url="">{{ lang('ACP_CLARTE_IMAGE_NONE') }}</option>
+									{% for img in slot.OPTIONS %}
+										<option value="{{ img.NAME }}" data-url="{{ img.URL }}"{% if img.NAME == slot.VALUE %} selected="selected"{% endif %}>{{ img.LABEL }}</option>
+									{% endfor %}
+								</select>
+								<br><label class="clarte-upload">{{ lang('ACP_CLARTE_IMAGE_UPLOAD') }}{{ lang('COLON') }} <input type="file" name="upload_{{ slot.KEY }}" id="upload_{{ slot.KEY }}" accept="{{ slot.ACCEPT }}" data-for="{{ slot.KEY }}"></label>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				{% endfor %}
+				<dl>
+					<dt><label for="clarte_header_position">{{ lang('CLARTE_HEADER_POSITION') }}{{ lang('COLON') }}</label>{% if lang('CLARTE_HEADER_POSITION_EXPLAIN') != 'CLARTE_HEADER_POSITION_EXPLAIN' %}<br><span>{{ lang('CLARTE_HEADER_POSITION_EXPLAIN') }}</span>{% endif %}</dt>
+					<dd>
+						<select id="clarte_header_position" name="clarte_header_position">
+							{% for v in CLARTE_POSITIONS %}
+								<option value="{{ v }}"{% if CLARTE_HEADER_POSITION == v %} selected="selected"{% endif %}>{{ lang('CLARTE_POSITION_' ~ v|upper) }}</option>
+							{% endfor %}
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="clarte_header_overlay">{{ lang('CLARTE_HEADER_OVERLAY') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_HEADER_OVERLAY_EXPLAIN') }}</span></dt>
+					<dd>
+						<div class="clarte-range">
+							<input type="range" id="clarte_header_overlay" name="clarte_header_overlay" min="{{ CLARTE_RANGES.clarte_header_overlay[0] }}" max="{{ CLARTE_RANGES.clarte_header_overlay[1] }}" step="1" value="{{ CLARTE_HEADER_OVERLAY }}" data-unit=" %">
+							<output for="clarte_header_overlay" id="clarte_header_overlay_out">{{ CLARTE_HEADER_OVERLAY }} %</output>
+						</div>
+					</dd>
+				</dl>
+				{% if not S_MODEL_EDIT %}
+				<h4 class="clarte-subtitle">{{ lang('ACP_CLARTE_IMAGES_MEMBERS') }}</h4>
+				<dl>
+					<dt><label for="clarte_bg_allow">{{ lang('CLARTE_BG_ALLOW') }}{{ lang('COLON') }}</label><br><span>{{ lang('CLARTE_BG_ALLOW_EXPLAIN') }}</span></dt>
+					<dd>
+						<label><input type="radio" class="radio" id="clarte_bg_allow" name="clarte_bg_allow" value="1"{% if CLARTE_BG_ALLOW %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+						<label><input type="radio" class="radio" name="clarte_bg_allow" value="0"{% if not CLARTE_BG_ALLOW %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+					</dd>
+				</dl>
+				{% endif %}
+			</fieldset>
+			{% if not S_MODEL_EDIT %}
+			<fieldset class="clarte-icons">
+				<legend>{{ lang('ACP_CLARTE_ICONS') }}</legend>
+				<p class="clarte-fieldset-explain">{{ lang('ACP_CLARTE_ICONS_EXPLAIN') }}</p>
+				{% for slot in icon_slots %}
+				<dl class="clarte-image-slot">
+					<dt><label for="{{ slot.KEY }}">{{ slot.LABEL }}{{ lang('COLON') }}</label><br><span>{{ slot.EXPLAIN }}</span></dt>
+					<dd>
+						<div class="clarte-image-pick">
+							<span class="clarte-thumb" id="{{ slot.KEY }}_thumb"{% if slot.URL %} style="background-image: url('{{ slot.URL }}');"{% endif %}></span>
+							<div>
+								<select id="{{ slot.KEY }}" name="{{ slot.KEY }}" class="clarte-image-select">
+									<option value="" data-url="">{{ lang('ACP_CLARTE_IMAGE_NONE') }}</option>
+									{% for img in slot.OPTIONS %}
+										<option value="{{ img.NAME }}" data-url="{{ img.URL }}"{% if img.NAME == slot.VALUE %} selected="selected"{% endif %}>{{ img.LABEL }}</option>
+									{% endfor %}
+								</select>
+								<br><label class="clarte-upload">{{ lang('ACP_CLARTE_IMAGE_UPLOAD') }}{{ lang('COLON') }} <input type="file" name="upload_{{ slot.KEY }}" id="upload_{{ slot.KEY }}" accept="{{ slot.ACCEPT }}" data-for="{{ slot.KEY }}"></label>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				{% endfor %}
+			</fieldset>
+			{% endif %}
 		</div>
 
 		<div class="clarte-preview-wrap">
@@ -160,6 +343,7 @@
 			<div class="clarte-preview-pair">
 				{% for theme in ['light', 'dark'] %}
 				<div class="clarte-preview clarte-preview--{{ theme }}" id="clarte_preview_{{ theme }}">
+					<span class="clarte-preview__bg"></span><span class="clarte-preview__veil"></span>
 					<div class="clarte-preview__header"><span class="clarte-preview__logo"></span>{{ lang('ACP_CLARTE_PREVIEW_TITLE') }}</div>
 					<div class="clarte-preview__nav"><span></span><span></span><span class="is-accent"></span></div>
 					<div class="clarte-preview__card">
@@ -203,6 +387,29 @@
 	</fieldset>
 	{% endif %}
 </form>
+
+{% if not S_MODEL_EDIT %}
+<fieldset class="clarte-library">
+	<legend>{{ lang('ACP_CLARTE_LIBRARY') }}</legend>
+	<p>{{ lang('ACP_CLARTE_LIBRARY_EXPLAIN') }}</p>
+	{% if library %}
+	<div class="clarte-library__grid">
+		{% for img in library %}
+		<figure class="clarte-library__item">
+			<a href="{{ img.URL }}" target="_blank" rel="noopener"><span class="clarte-thumb clarte-thumb--big" style="background-image: url('{{ img.URL }}');"></span></a>
+			<figcaption>
+				<strong>{{ img.DIMS }}</strong> · {{ img.SIZE }}<br>
+				{% if img.USES %}<span class="clarte-library__uses">{{ lang('ACP_CLARTE_IMAGE_USED', img.USES) }}</span>
+				{% else %}<a href="{{ img.U_DELETE }}" class="clarte-library__delete" onclick="return confirm('{{ lang('ACP_CLARTE_IMAGE_DELETE_CONFIRM')|e('js') }}');">{{ lang('ACP_CLARTE_IMAGE_DELETE') }}</a>{% endif %}
+			</figcaption>
+		</figure>
+		{% endfor %}
+	</div>
+	{% else %}
+	<p><em>{{ lang('ACP_CLARTE_LIBRARY_EMPTY') }}</em></p>
+	{% endif %}
+</fieldset>
+{% endif %}
 
 <script>
 (function () {
@@ -261,6 +468,7 @@
 				if (picker) { picker.value = s[k]; }
 			});
 			paint();
+			images();
 		});
 	});
 	/* « Enregistrer comme modèle » : le nom est obligatoire ; Entrée dans le nom enregistre le modèle */
@@ -273,6 +481,60 @@
 			if (!form.clarte_model_name.value.trim()) { e.preventDefault(); form.clarte_model_name.focus(); }
 		});
 	}
+	/* Taille du texte : affichage du pourcentage et bouton 100 % */
+	var textSize = document.getElementById('clarte_text_size');
+	if (textSize) {
+		var textOut = document.getElementById('clarte_text_size_out');
+		var showText = function () { textOut.textContent = textSize.value + '\u00a0%'; ['light', 'dark'].forEach(function (k) { document.getElementById('clarte_preview_' + k).style.fontSize = (12 * textSize.value / 100) + 'px'; }); };
+		textSize.addEventListener('input', showText);
+		document.getElementById('clarte_text_size_reset').addEventListener('click', function () { textSize.value = 100; showText(); });
+		showText();
+	}
+	/* Images de fond : vignettes, curseurs et aperçu */
+	function urlOf(key) {
+		var sel = form[key], file = document.getElementById('upload_' + key);
+		if (file && file.files && file.files[0]) { return file.getAttribute('data-blob') || ''; }
+		var opt = sel.options[sel.selectedIndex];
+		return opt ? opt.getAttribute('data-url') : '';
+	}
+	function images() {
+		Array.prototype.forEach.call(form.querySelectorAll('.clarte-image-select'), function (sel) {
+			var u = urlOf(sel.id);
+			document.getElementById(sel.id + '_thumb').style.backgroundImage = u ? 'url("' + u + '")' : '';
+		});
+		Array.prototype.forEach.call(form.querySelectorAll('.clarte-images input[type=range]'), function (r) {
+			document.getElementById(r.id + '_out').textContent = r.value + r.getAttribute('data-unit');
+		});
+		var bg = urlOf('clarte_bg_image'), bgDark = urlOf('clarte_bg_image_dark'), hd = urlOf('clarte_header_image'), hdDark = urlOf('clarte_header_image_dark');
+		var veil = form.clarte_bg_overlay.value / 100, sizes = { cover: 'cover', tile: 'auto', center: 'auto' }, mode = form.clarte_bg_mode.value;
+		var glass = 1 - form.clarte_bg_glass.value / 100, hv = form.clarte_header_overlay.value;
+		Array.prototype.forEach.call(document.querySelectorAll('.clarte-dark-slot'), function (dl) { dl.style.opacity = (dl.querySelector('select').id.indexOf('header') === 0 || dl.querySelector('select').id.indexOf('clarte_header') === 0 ? hd : bg) ? '' : '.55'; });
+		['light', 'dark'].forEach(function (k) {
+			var el = document.getElementById('clarte_preview_' + k), img = k === 'dark' ? (bgDark || bg) : bg, h = k === 'dark' ? (hdDark || hd) : hd;
+			var layer = el.querySelector('.clarte-preview__bg');
+			layer.style.backgroundImage = img ? 'url("' + img + '")' : '';
+			layer.style.backgroundSize = sizes[mode];
+			layer.style.backgroundRepeat = mode === 'tile' ? 'repeat' : 'no-repeat';
+			layer.style.backgroundPosition = form.clarte_bg_position.value;
+			layer.style.filter = form.clarte_bg_blur.value > 0 ? 'blur(' + (form.clarte_bg_blur.value / 3) + 'px)' : '';
+			el.querySelector('.clarte-preview__veil').style.opacity = img ? (k === 'dark' && !bgDark ? veil + (1 - veil) * 0.45 : veil) : 0;
+			el.classList.toggle('has-glass', !!img && glass < 1);
+			el.style.setProperty('--glass', glass);
+			var head = el.querySelector('.clarte-preview__header');
+			head.style.background = h ? 'linear-gradient(135deg, color-mix(in srgb, var(--header-from) ' + hv + '%, transparent), color-mix(in srgb, var(--header-to) ' + hv + '%, transparent)), url("' + h + '") ' + form.clarte_header_position.value + '/cover no-repeat, var(--header-from)' : '';
+		});
+	}
+	Array.prototype.forEach.call(form.querySelectorAll('input[type=file][data-for]'), function (f) {
+		f.addEventListener('change', function () {
+			if (f.getAttribute('data-blob')) { URL.revokeObjectURL(f.getAttribute('data-blob')); }
+			f.setAttribute('data-blob', f.files && f.files[0] ? URL.createObjectURL(f.files[0]) : '');
+			images();
+		});
+	});
+	Array.prototype.forEach.call(form.querySelectorAll('.clarte-images select, .clarte-images input, .clarte-icons select'), function (el) {
+		el.addEventListener(el.tagName === 'SELECT' || el.type === 'radio' ? 'change' : 'input', images);
+	});
+	images();
 	form.clarte_radius.addEventListener('input', paint);
 	form.clarte_font.addEventListener('change', paint);
 	form.clarte_cat_mode.addEventListener('change', paint);

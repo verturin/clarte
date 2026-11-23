@@ -1,0 +1,38 @@
+{% if CLARTE_EXT and S_CLARTE_BG_ALLOW %}
+	{# Clarté : le membre peut masquer les images de fond (autorisé dans ACP › Style Clarté) #}
+	<dl>
+		<dt><label for="clarte_bg_hide">{{ lang('CLARTE_BG_UCP') }}{{ lang('COLON') }}</label><br /><span>{{ lang('CLARTE_BG_UCP_EXPLAIN') }}</span></dt>
+		<dd>
+			<label><input type="radio" class="radio" name="clarte_bg_hide" id="clarte_bg_hide" value="0"{% if not S_CLARTE_BG_HIDE %} checked="checked"{% endif %} /> {{ lang('CLARTE_BG_SHOW') }}</label>
+			<label><input type="radio" class="radio" name="clarte_bg_hide" value="1"{% if S_CLARTE_BG_HIDE %} checked="checked"{% endif %} /> {{ lang('CLARTE_BG_HIDE') }}</label>
+		</dd>
+	</dl>
+{% endif %}
+{% if CLARTE_EXT and S_CLARTE_TEXT_ALLOW %}
+	{# Clarté : taille du texte choisie par le membre (autorisée dans ACP › Style Clarté) #}
+	<dl>
+		<dt><label for="clarte_text">{{ lang('CLARTE_TEXT_UCP') }}{{ lang('COLON') }}</label><br /><span>{{ lang('CLARTE_TEXT_UCP_EXPLAIN') }}</span></dt>
+		<dd>
+			<label><input type="checkbox" name="clarte_text_board" id="clarte_text_board" value="1"{% if S_CLARTE_TEXT_BOARD %} checked="checked"{% endif %} /> {{ lang('CLARTE_TEXT_BOARD', CLARTE_TEXT_FORUM) }}</label>
+		</dd>
+		<dd style="display: flex; align-items: center; gap: 10px;">
+			<input type="range" name="clarte_text" id="clarte_text" min="{{ CLARTE_TEXT_MIN }}" max="{{ CLARTE_TEXT_MAX }}" step="1" value="{{ CLARTE_TEXT_VALUE }}" style="width: 220px; max-width: 100%; accent-color: var(--accent);"{% if S_CLARTE_TEXT_BOARD %} disabled="disabled"{% endif %} />
+			<output for="clarte_text" id="clarte_text_out" style="font-weight: 700; min-width: 4.5em;">{{ CLARTE_TEXT_VALUE }}&nbsp;%</output>
+		</dd>
+	</dl>
+	<script>
+	(function () {
+		var range = document.getElementById('clarte_text'), out = document.getElementById('clarte_text_out'), board = document.getElementById('clarte_text_board');
+		var forum = '{{ CLARTE_TEXT_FORUM }}';
+		function show() {
+			var v = board.checked ? forum : range.value;
+			range.disabled = board.checked;
+			if (board.checked) { range.value = forum; }
+			out.textContent = v + '\u00a0%';
+			document.documentElement.style.setProperty('--clarte-scale', v / 100);
+		}
+		range.addEventListener('input', show);
+		board.addEventListener('change', show);
+	})();
+	</script>
+{% endif %}

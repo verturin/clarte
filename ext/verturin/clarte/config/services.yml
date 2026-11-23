@@ -37,6 +37,11 @@ services:
             - '%tables.styles%'
             - '%tables.users%'
 
+    verturin.clarte.images:
+        class: verturin\clarte\core\images
+        arguments:
+            - '%core.root_path%'
+
     verturin.clarte.acp_controller:
         class: verturin\clarte\controller\acp_controller
         arguments:
@@ -49,3 +54,4 @@ services:
             - '@verturin.clarte.models'
             - '@verturin.clarte.forum_models'
             - '@verturin.clarte.model_styles'
+            - '@verturin.clarte.images'

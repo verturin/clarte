@@ -9,6 +9,7 @@
 namespace verturin\clarte\controller;
 
 use verturin\clarte\core\forum_models;
+use verturin\clarte\core\images;
 use verturin\clarte\core\model_styles;
 use verturin\clarte\core\models;
 use verturin\clarte\event\listener;
@@ -30,8 +31,8 @@ class acp_controller
 		'graphite'	=> ['#475569', '#0b0f17', '#334155'],
 	];
 
-	/** Taille maximale d'un fichier importé (octets) */
-	const MAX_UPLOAD = 524288;
+	/** Taille maximale d'un fichier importé (octets) : les sauvegardes contiennent les images de fond */
+	const MAX_UPLOAD = 20971520;
 
 	/** Formats des fichiers JSON produits par l'extension */
 	const FORMAT_MODELS = 'clarte-models';
@@ -46,12 +47,14 @@ class acp_controller
 	protected $models;
 	protected $forum_models;
 	protected $model_styles;
+	protected $images;
 	protected $u_action;
 
 	public function __construct(\phpbb\config\config $config, \phpbb\language\language $language, \phpbb\log\log_interface $log,
 		\phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, models $models,
-		forum_models $forum_models, model_styles $model_styles)
+		forum_models $forum_models, model_styles $model_styles, images $images)
 	{
+		$this->images = $images;
 		$this->forum_models = $forum_models;
 		$this->model_styles = $model_styles;
 		$this->config = $config;
@@ -74,6 +77,22 @@ class acp_controller
 
 	public function settings()
 	{
+		if ($this->request->variable('action', '') === 'image_delete')
+		{
+			$file = images::valid_name($this->request->variable('file', ''));
+			if (!check_link_hash($this->request->variable('hash', ''), 'clarte_images'))
+			{
+				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+			if ($file === '' || isset($this->images_in_use()[$file]))
+			{
+				trigger_error($this->language->lang('ACP_CLARTE_IMAGE_IN_USE') . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+			$this->images->delete($file);
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_CLARTE_IMAGE_DELETED', false, [$file]);
+			redirect($this->u_action);
+		}
+
 		add_form_key('verturin_clarte');
 		$errors = [];
 		$values = $this->current();
@@ -126,6 +145,61 @@ class acp_controller
 			'U_ACP_STYLES'			=> append_sid($this->admin_path() . 'index.php', 'i=acp_styles&amp;mode=style', true, $this->user->session_id),
 			'U_CLARTE_MODELS'		=> $this->mode_url('models'),
 		]);
+
+		// Bibliothèque d'images : les images qui ne servent nulle part peuvent être supprimées
+		$used = $this->images_in_use();
+		$hash = generate_link_hash('clarte_images');
+		foreach ($this->images->all() as $name => $info)
+		{
+			$this->template->assign_block_vars('library', [
+				'NAME'		=> $name,
+				'URL'		=> $this->image_url($name),
+				'SIZE'		=> get_formatted_filesize($info['size']),
+				'DIMS'		=> $info['width'] . ' × ' . $info['height'],
+				'USES'		=> isset($used[$name]) ? implode(', ', $used[$name]) : '',
+				'U_DELETE'	=> isset($used[$name]) ? '' : $this->u_action . '&amp;action=image_delete&amp;file=' . $name . '&amp;hash=' . $hash,
+			]);
+		}
+	}
+
+	/** Images utilisées : nom => [où] (réglages du forum, modèles) */
+	protected function images_in_use()
+	{
+		$used = [];
+		$current = $this->current();
+		foreach (models::IMAGE_KEYS as $key)
+		{
+			if ($current[$key] !== '')
+			{
+				$used[$current[$key]][] = $this->language->lang('ACP_CLARTE_IMAGE_USED_BOARD');
+			}
+		}
+		foreach ($this->models->all() as $item)
+		{
+			foreach (models::IMAGE_KEYS as $key)
+			{
+				if (!empty($item['settings'][$key]))
+				{
+					$used[$item['settings'][$key]][] = $item['name'];
+				}
+			}
+		}
+
+		return array_map('array_unique', $used);
+	}
+
+	/** Images citées par des réglages */
+	protected static function image_names(array $settings)
+	{
+		return array_values(array_filter(array_intersect_key($settings, array_flip(models::IMAGE_KEYS))));
+	}
+
+	/** Adresse d'une image de la bibliothèque, depuis l'ACP */
+	protected function image_url($name)
+	{
+		global $phpbb_root_path;
+
+		return $phpbb_root_path . images::DIR . $name;
 	}
 
 	/* ====================================================================================
@@ -216,14 +290,17 @@ class acp_controller
 					'format'	=> self::FORMAT_MODELS,
 					'generator'	=> $this->generator(),
 					'models'	=> models::export_list([$model]),
+					'images'	=> $this->images->encode(self::image_names($model['settings'])),
 				], 'clarte-modele-' . $this->slug($model['name']) . '.json');
 			break;
 
 			case 'export_all':
+				$all = $this->models->all();
 				$this->send_json([
 					'format'	=> self::FORMAT_MODELS,
 					'generator'	=> $this->generator(),
-					'models'	=> models::export_list($this->models->all()),
+					'models'	=> models::export_list($all),
+					'images'	=> $this->images->encode($this->models_image_names($all)),
 				], 'clarte-modeles-' . gmdate('Y-m-d') . '.json');
 			break;
 		}
@@ -264,7 +341,7 @@ class acp_controller
 				}
 				else
 				{
-					$added = count($this->models->import($data['models']));
+					$added = count($this->models->import($this->relink_models($data['models'], $this->import_images($data))));
 					$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_CLARTE_MODELS_IMPORTED', false, [$added]);
 					trigger_error($this->language->lang('ACP_CLARTE_MODELS_IMPORTED', $added) . adm_back_link($this->u_action));
 				}
@@ -377,6 +454,7 @@ class acp_controller
 				'board'		=> (string) $this->config['sitename'],
 				'settings'	=> $this->current(),
 				'models'	=> $this->backup_models(),
+				'images'	=> $this->images->encode(array_merge(self::image_names($this->current()), $this->models_image_names($this->models->all()))),
 			], 'clarte-sauvegarde-' . gmdate('Y-m-d-His') . '.json');
 		}
 
@@ -405,10 +483,15 @@ class acp_controller
 				else
 				{
 					$done = [];
+					$image_map = $this->import_images($data);
+					if ($image_map)
+					{
+						$done[] = $this->language->lang('ACP_CLARTE_RESTORED_IMAGES', count($image_map));
+					}
 					if ($do_settings)
 					{
 						$bad = [];
-						$settings = models::clean($data['settings'] + $this->current(), array_keys(self::DEFAULTS), $bad);
+						$settings = models::clean($this->images->relink($data['settings'], $image_map) + $this->current(), array_keys(self::DEFAULTS), $bad);
 						$this->apply($settings);
 						$done[] = $this->language->lang('ACP_CLARTE_RESTORED_SETTINGS');
 					}
@@ -420,7 +503,7 @@ class acp_controller
 							$this->forum_models->save([]);
 							$this->models->clear();
 						}
-						$list = isset($data['models']) && is_array($data['models']) ? $data['models'] : [];
+						$list = $this->relink_models(isset($data['models']) && is_array($data['models']) ? $data['models'] : [], $image_map);
 						$ids = $this->models->import($list);
 						$done[] = $this->language->lang('ACP_CLARTE_RESTORED_MODELS', count($ids));
 						$done = array_merge($done, $this->restore_links($list, $ids));
@@ -671,16 +754,37 @@ class acp_controller
 		$in = [];
 		foreach ($keys as $key)
 		{
-			$in[$key] = in_array($key, ['clarte_allow_toggle', 'clarte_acp', 'clarte_radius'], true)
+			$in[$key] = in_array($key, ['clarte_allow_toggle', 'clarte_acp', 'clarte_acp_tabs', 'clarte_radius', 'clarte_text_allow', 'clarte_text_size', 'clarte_bg_fixed',
+				'clarte_bg_overlay', 'clarte_bg_blur', 'clarte_bg_glass', 'clarte_bg_mobile', 'clarte_header_overlay', 'clarte_bg_allow'], true)
 				? $this->request->variable($key, 0)
 				: $this->request->variable($key, '');
+
+			// Image envoyée avec le formulaire : prend la place de celle choisie dans la liste
+			if (in_array($key, models::IMAGE_KEYS, true))
+			{
+				$error = '';
+				$types = models::image_types($key);
+				$name = $this->images->store_upload($this->request->file('upload_' . $key), $error, $types);
+				if ($name === false)
+				{
+					$errors[] = $this->language->lang('ACP_CLARTE_IMAGE_ERROR', $this->language->lang(strtoupper($key)), $this->language->lang($error, get_formatted_filesize(images::MAX_SIZE), images::MAX_DIM, strtoupper(implode(', ', $types))));
+				}
+				else if ($name !== '')
+				{
+					$in[$key] = $name;
+				}
+				else if ($in[$key] !== '' && !$this->images->exists($in[$key]))
+				{
+					$in[$key] = '';
+				}
+			}
 		}
 
 		$bad = [];
 		$values = models::clean($in, $keys, $bad);
 		foreach ($bad as $key => $raw)
 		{
-			$errors[] = $this->language->lang('ACP_CLARTE_BAD_COLOUR', $this->language->lang(strtoupper($key)), htmlspecialchars($raw, ENT_COMPAT, 'UTF-8'));
+			$errors[] = $this->language->lang('ACP_CLARTE_BAD_COLOUR', $this->language->lang(strtoupper($key)), utf8_htmlspecialchars($raw));
 		}
 
 		return $values;
@@ -706,7 +810,7 @@ class acp_controller
 				'NAME'		=> $item['name'],
 				'ACCENT'	=> $item['settings']['clarte_accent'],
 				'FROM'		=> $item['settings']['clarte_header_from'],
-				'SETTINGS'	=> htmlspecialchars(json_encode($item['settings']), ENT_QUOTES, 'UTF-8'),
+				'SETTINGS'	=> utf8_htmlspecialchars(json_encode($item['settings'])),
 			]);
 		}
 
@@ -720,6 +824,7 @@ class acp_controller
 			'CLARTE_DEFAULT_MODE'	=> $values['clarte_default_mode'],
 			'CLARTE_ALLOW_TOGGLE'	=> (bool) $values['clarte_allow_toggle'],
 			'CLARTE_ACP_ENABLED'	=> (bool) $values['clarte_acp'],
+			'CLARTE_ACP_TABS_ENABLED'	=> (bool) $values['clarte_acp_tabs'],
 			'CLARTE_FONT'			=> $values['clarte_font'],
 			'CLARTE_RADIUS'			=> (int) $values['clarte_radius'],
 			'CLARTE_CAT_MODE'		=> $values['clarte_cat_mode'],
@@ -727,8 +832,87 @@ class acp_controller
 			'CLARTE_CAT_COLOUR'		=> $values['clarte_cat_colour'],
 			'CLARTE_NAME_MAX'		=> models::NAME_MAX,
 			'CLARTE_INDEX_TIME'		=> $values['clarte_index_time'],
+			'CLARTE_TEXT_SIZE'		=> $values['clarte_text_size'],
+			'CLARTE_TEXT_MIN'		=> listener::TEXT_MIN,
+			'CLARTE_TEXT_MAX'		=> listener::TEXT_MAX,
+			'CLARTE_TEXT_ALLOW'		=> (bool) $values['clarte_text_allow'],
 			'CLARTE_INDEX_TIMES'	=> listener::INDEX_TIMES,
+			'CLARTE_BG_MODES'		=> models::BG_MODES,
+			'CLARTE_POSITIONS'		=> models::POSITIONS,
+			'CLARTE_BG_MODE'		=> $values['clarte_bg_mode'],
+			'CLARTE_BG_POSITION'	=> $values['clarte_bg_position'],
+			'CLARTE_BG_FIXED'		=> (bool) $values['clarte_bg_fixed'],
+			'CLARTE_BG_OVERLAY'		=> (int) $values['clarte_bg_overlay'],
+			'CLARTE_BG_BLUR'		=> (int) $values['clarte_bg_blur'],
+			'CLARTE_BG_GLASS'		=> (int) $values['clarte_bg_glass'],
+			'CLARTE_BG_MOBILE'		=> (bool) $values['clarte_bg_mobile'],
+			'CLARTE_HEADER_POSITION'	=> $values['clarte_header_position'],
+			'CLARTE_HEADER_OVERLAY'	=> (int) $values['clarte_header_overlay'],
+			'CLARTE_BG_ALLOW'		=> (bool) $values['clarte_bg_allow'],
+			'CLARTE_RANGES'			=> models::RANGES,
+			'CLARTE_IMAGE_MAX'		=> get_formatted_filesize(images::MAX_SIZE),
 		]);
+
+		// Emplacements d'image : liste des images de la bibliothèque + envoi d'une nouvelle
+		$library = $this->images->all();
+		foreach (models::IMAGE_KEYS as $key)
+		{
+			$options = [];
+			$types = models::image_types($key);
+			foreach ($library as $name => $info)
+			{
+				if (!in_array(substr($name, strrpos($name, '.') + 1), $types, true))
+				{
+					continue;
+				}
+				$options[] = ['NAME' => $name, 'URL' => $this->image_url($name), 'LABEL' => $info['width'] . ' × ' . $info['height'] . ' · ' . get_formatted_filesize($info['size']) . ' · ' . substr($name, 0, 6) . '…' . substr($name, strrpos($name, '.'))];
+			}
+			$block = in_array($key, models::ICON_KEYS, true) ? 'icon_slots' : (in_array($key, models::HEADER_KEYS, true) ? 'header_slots' : 'bg_slots');
+			$this->template->assign_block_vars($block, [
+				'KEY'		=> $key,
+				'VALUE'		=> $values[$key],
+				'URL'		=> $values[$key] !== '' ? $this->image_url($values[$key]) : '',
+				'S_DARK'	=> substr($key, -5) === '_dark',
+				'LABEL'		=> $this->language->lang(strtoupper($key)),
+				'EXPLAIN'	=> $this->language->lang(strtoupper($key) . '_EXPLAIN'),
+				'OPTIONS'	=> $options,
+				'ACCEPT'	=> implode(',', array_map(function ($t) {
+					return $t === 'ico' ? 'image/x-icon,image/vnd.microsoft.icon,.ico' : 'image/' . ($t === 'jpg' ? 'jpeg' : $t);
+				}, $types)),
+			]);
+		}
+	}
+
+	/** Images citées par une liste de modèles */
+	protected function models_image_names(array $items)
+	{
+		$names = [];
+		foreach ($items as $item)
+		{
+			$names = array_merge($names, self::image_names($item['settings']));
+		}
+
+		return $names;
+	}
+
+	/** Enregistre les images d'un fichier importé ; renvoie l'ancien nom => le nouveau */
+	protected function import_images(array $data)
+	{
+		return isset($data['images']) && is_array($data['images']) ? $this->images->decode($data['images']) : [];
+	}
+
+	/** Modèles importés : noms d'images mis à jour */
+	protected function relink_models(array $list, array $map)
+	{
+		foreach ($list as $i => $entry)
+		{
+			if (is_array($entry) && isset($entry['settings']) && is_array($entry['settings']))
+			{
+				$list[$i]['settings'] = $this->images->relink($entry['settings'], $map);
+			}
+		}
+
+		return $list;
 	}
 
 	/** Le modèle correspond-il aux réglages en service ? */
@@ -754,7 +938,7 @@ class acp_controller
 			$this->language->lang('ACP_CLARTE_SUMMARY_CAT', $this->language->lang('CLARTE_CAT_SHORT_' . strtoupper($s['clarte_cat_mode']))),
 			$this->language->lang($s['clarte_font'] === 'system' ? 'ACP_CLARTE_SUMMARY_FONT_SYSTEM' : 'ACP_CLARTE_SUMMARY_FONT_INTER'),
 			$this->language->lang('ACP_CLARTE_SUMMARY_RADIUS', (int) $s['clarte_radius']),
-		]);
+		] + (!empty($s['clarte_bg_image']) || !empty($s['clarte_header_image']) ? [4 => $this->language->lang('ACP_CLARTE_SUMMARY_IMAGES')] : []));
 	}
 
 	/** Fond de la pastille « bandeau » dans la liste des modèles */
@@ -805,11 +989,13 @@ class acp_controller
 	{
 		$json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-		header('Content-Type: application/json; charset=utf-8');
-		header('Content-Disposition: attachment; filename="' . $filename . '"');
-		header('Content-Length: ' . strlen($json));
-		header('Cache-Control: no-store, no-cache, must-revalidate');
-		echo $json;
+		$response = new \Symfony\Component\HttpFoundation\Response($json, 200, [
+			'Content-Type'			=> 'application/json; charset=utf-8',
+			'Content-Disposition'	=> 'attachment; filename="' . $filename . '"',
+			'Content-Length'		=> strlen($json),
+			'Cache-Control'			=> 'no-store, no-cache, must-revalidate',
+		]);
+		$response->send();
 
 		garbage_collection();
 		exit_handler();

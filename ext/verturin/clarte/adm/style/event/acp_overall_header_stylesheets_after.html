@@ -1,3 +1,5 @@
+{# Clarté : icône du site, aussi dans l'administration #}
+{% if CLARTE_ICON_TAGS %}{{ CLARTE_ICON_TAGS }}{% endif %}
 {% if CLARTE_ACP %}
 {# Clarté : habillage de toute l'administration (ACP › Extensions › Style Clarté) #}
 <link href="{{ CLARTE_ACP_CSS_PATH }}clarte_admin_colours.css?assets_version={{ CLARTE_ASSETS_VERSION }}" rel="stylesheet">

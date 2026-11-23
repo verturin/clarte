@@ -36,4 +36,5 @@ $lang = array_merge($lang, [
 	'CLARTE_MODE_LIGHT'		=> 'Light',
 	'CLARTE_MODE_DARK'		=> 'Dark',
 	'CLARTE_MODE_TITLE'		=> 'Appearance: click to change',
+	'LOG_CLARTE_IMAGE_DELETED'	=> '<strong>Clarté style: background image deleted</strong><br>» %s',
 ]);

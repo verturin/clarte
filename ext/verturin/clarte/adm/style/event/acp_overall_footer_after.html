@@ -1,3 +1,32 @@
+{% if CLARTE_ACP and CLARTE_ACP_TABS %}
+<script>
+/* Clarté : les pages de la rubrique en cours (celle du menu de gauche) en onglets en haut de la page, toujours visibles */
+(function () {
+	var active = document.getElementById('activemenu'), main = document.querySelector('#main > .main') || document.getElementById('main');
+	if (!active || !main) { return; }
+	/* Seulement pour les extensions : leurs modules ont une adresse en i=-vendeur-extension-… */
+	if (!/[?&]i=(-|%5C|\\)/.test(active.querySelector('a').getAttribute('href') || '')) { return; }
+	var block = active.closest('.menu-block');
+	if (!block) { return; }
+	var links = block.querySelectorAll('ul > li > a');
+	if (links.length < 2) { return; }
+	var nav = document.createElement('nav'), title = block.querySelector('.header');
+	nav.className = 'clarte-acp-subnav';
+	nav.setAttribute('aria-label', title ? title.textContent.trim() : '');
+	var list = document.createElement('ul');
+	Array.prototype.forEach.call(links, function (a) {
+		var li = document.createElement('li'), b = document.createElement('a');
+		b.href = a.href;
+		b.textContent = a.textContent.trim();
+		if (a.parentNode.id === 'activemenu') { li.className = 'is-current'; b.setAttribute('aria-current', 'page'); }
+		li.appendChild(b);
+		list.appendChild(li);
+	});
+	nav.appendChild(list);
+	main.insertBefore(nav, main.firstChild);
+})();
+</script>
+{% endif %}
 {% if CLARTE_ACP %}
 <script>
 (function () {

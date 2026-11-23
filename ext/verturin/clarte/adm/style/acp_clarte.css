@@ -85,3 +85,36 @@ html[data-theme="dark"] .clarte-action--danger { color: #f87171 !important; }
 }
 .clarte-forums__warn { display: block; margin-top: 2px; font-size: .9em; font-weight: 600; color: #dc2626; }
 html[data-theme="dark"] .clarte-forums__warn { color: #f87171; }
+
+/* Curseur de taille du texte */
+.clarte-range { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.clarte-range input[type=range] { width: 180px; max-width: 100%; accent-color: var(--accent, #2563eb); }
+.clarte-range output { min-width: 4.5em; font-weight: 700; font-variant-numeric: tabular-nums; }
+.clarte-range .button2 { padding: 2px 8px; font-size: 11px; line-height: 1.6; }
+
+/* Images de fond (1.6.0) */
+.clarte-subtitle { margin: 14px 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--accent-line, #d6dcea); font-size: 1.1em; }
+.clarte-fieldset-explain { margin: 4px 0 6px; }
+.clarte-image-pick { display: flex; gap: 10px; align-items: flex-start; }
+.clarte-image-pick select { width: 100%; max-width: 100%; box-sizing: border-box; }
+.clarte-upload { display: inline-block; margin-top: 6px; font-size: .95em; }
+.clarte-upload input[type=file] { display: block; width: 100%; max-width: 100%; margin-top: 3px; box-sizing: border-box; }
+.clarte-thumb { display: inline-block; flex: none; width: 64px; height: 44px; border-radius: 6px; border: 1px solid #ccd3df;
+	background: repeating-conic-gradient(#e7ebf1 0 25%, #fff 0 50%) 0 0 / 12px 12px; background-size: cover; background-position: center; }
+.clarte-thumb[style*="url"] { background-color: #fff; }
+.clarte-thumb--big { width: 150px; height: 96px; }
+.clarte-preview { position: relative; isolation: isolate; overflow: hidden; }
+.clarte-preview__bg, .clarte-preview__veil { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.clarte-preview__bg { inset: -6px; }
+.clarte-preview__veil { background: var(--page); opacity: 0; }
+.clarte-preview.has-glass .clarte-preview__nav, .clarte-preview.has-glass .clarte-preview__card { background: color-mix(in srgb, var(--surface) calc(var(--glass) * 100%), transparent); backdrop-filter: blur(4px); }
+.clarte-library__grid { display: flex; flex-wrap: wrap; gap: 14px; }
+.clarte-library__item { margin: 0; width: 150px; font-size: .95em; }
+.clarte-library__item figcaption { margin-top: 4px; line-height: 1.5; }
+.clarte-library__uses { color: #5b6577; }
+.clarte-library__delete { color: #b91c1c; }
+.clarte-image-pick > div { flex: 1; min-width: 0; }
+.clarte-upload { display: block; }
+
+/* Icône du site (1.7.0) : vignettes carrées, image entière */
+.clarte-icons .clarte-thumb { width: 44px; height: 44px; background-size: contain; background-repeat: no-repeat; }
