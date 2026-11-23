@@ -74,13 +74,15 @@ html[data-theme="dark"] {
 }
 
 /* ---------- Base ---------- */
+/* Taille du texte : --clarte-scale (1 par défaut) est posé par l'extension (réglage ACP ou choix du membre, 1.5.0 ; de 0,8 à 1,5 depuis la 1.5.1).
+   La base suit, et tout ce qui est en em avec elle ; les quelques tailles fixes du texte sont multipliées aussi. */
 html, body {
 	background: var(--page);
 	color: var(--text);
 }
 body {
 	font-family: var(--font);
-	font-size: 10.5px;
+	font-size: calc(10.5px * var(--clarte-scale, 1));
 	-webkit-font-smoothing: antialiased;
 	padding: 14px 0 24px;
 }
@@ -198,7 +200,7 @@ ul.topiclist li.header {
 }
 li.header dt, li.header dd {
 	color: var(--muted);
-	font-size: 11px;
+	font-size: calc(11px * var(--clarte-scale, 1));
 	font-weight: 600;
 	letter-spacing: .05em;
 	text-transform: uppercase;
@@ -207,7 +209,7 @@ li.header dt, li.header dd {
 .forabg li.header dt .list-inner a,
 .forabg li.header dt .list-inner {
 	color: var(--text);
-	font-size: 13px;
+	font-size: calc(13px * var(--clarte-scale, 1));
 	font-weight: 700;
 	text-transform: none;
 	letter-spacing: 0;
@@ -241,7 +243,7 @@ ul.topiclist li.row.reported { background: color-mix(in srgb, #e11d48 8%, var(--
 ul.topiclist dd { border-left: 0; }
 ul.topiclist dt, ul.topiclist dd { padding-top: 4px; padding-bottom: 4px; }
 ul.topiclist li.row dd { color: var(--muted); }
-ul.topiclist li.row dd.posts, ul.topiclist li.row dd.topics, ul.topiclist li.row dd.views { font-size: 13px; color: var(--text); }
+ul.topiclist li.row dd.posts, ul.topiclist li.row dd.topics, ul.topiclist li.row dd.views { font-size: calc(13px * var(--clarte-scale, 1)); color: var(--text); }
 a.forumtitle, a.topictitle {
 	color: var(--text);
 	font-size: 1.2em;
@@ -282,7 +284,7 @@ html[data-theme="dark"] dl.row-item { filter: none; }
 }
 .postprofile strong { color: var(--text); }
 .postprofile .avatar img, .avatar img { border-radius: 12px; }
-.post h3, .postbody h3 { font-size: 16px; font-weight: 700; }
+.post h3, .postbody h3 { font-size: calc(16px * var(--clarte-scale, 1)); font-weight: 700; }
 .postbody h3 a { color: var(--text); }
 .postbody .author { color: var(--muted); }
 .content {
@@ -565,6 +567,46 @@ html[data-theme="dark"] .pf .pf-bulk, html[data-theme="dark"] .pf-toast { backgr
 	html:not([data-theme="light"]) .pf .pf-star:not(.is-filled), html:not([data-theme="light"]) .pf .pf-stars.is-hovering .pf-star:not(.is-hover) { color: #4b5563 !important; }
 	html:not([data-theme="light"]) .pf .pf-btn.is-active, html:not([data-theme="light"]) .pf .pf-btn.is-active:hover, html:not([data-theme="light"]) .pf .pf-chip.is-active { background: var(--accent); border-color: var(--accent); }
 	html:not([data-theme="light"]) .pf .pf-bulk, html:not([data-theme="light"]) .pf-toast { background: #26324a; }
+}
+
+/* ---------- Menu du panneau de l'utilisateur sur ordinateur (1.8.3) ----------
+   Le menu (et la liste des amis) reste collé en haut de l'écran quand on fait défiler une page longue.
+   S'il est plus haut que l'écran, il défile dans sa colonne : aucune entrée n'est cachée. */
+@media only screen and (min-width: 901px) and (min-device-width: 901px) {
+	/* prosilver ne dégage pas les flottants dans le bloc qui contient le menu : sans flow-root,
+	   ce bloc a une hauteur nulle et le menu ne peut pas rester collé. */
+	div:has(> #cp-menu) { display: flow-root; }
+	.cp-menu {
+		position: sticky; top: 12px;
+		max-height: calc(100vh - 24px); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+	}
+}
+
+/* ---------- Menu du panneau de l'utilisateur sur tablette et mobile (1.8.2) ----------
+   prosilver empile le menu en gros blocs au-dessus du contenu (≤ 900 px) :
+   ici, boutons alignés sur plusieurs lignes dans un cadre, trait vertical entre les groupes. */
+@media only screen and (max-width: 900px), only screen and (max-device-width: 900px) {
+	.cp-menu .navigation {
+		display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px;
+		max-width: none; margin: 6px 0 12px; padding: 8px 10px;
+		border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface);
+	}
+	.cp-menu .navigation ul { display: contents; }
+	.cp-menu .navigation li { display: block; margin: 0; font-weight: normal; }
+	.cp-menu .navigation hr {
+		flex: none; width: 1px; height: auto; margin: 0 4px; padding: 0;
+		border: 0; background: var(--line-strong);
+	}
+	#navigation a, .rtl #navigation a,
+	.cp-menu .navigation li:first-child a, .cp-menu .navigation li:last-child a {
+		margin: 0; padding: 4px 10px;
+		border: 1px solid var(--line-strong); border-radius: 6px;
+		background: var(--surface); color: var(--text); white-space: nowrap;
+	}
+	#navigation a:hover { border-color: var(--accent-line); color: var(--accent-ink); background: var(--surface); }
+	#navigation .active-subsection a, #navigation .active-subsection a:hover {
+		background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-ink); font-weight: 600;
+	}
 }
 
 /* ---------- Petits écrans ---------- */

@@ -26,7 +26,45 @@ class models
 	const NAME_MAX = 60;
 
 	/** Réglages qui forment un modèle (l'option ACP et le bouton Apparence restent propres au forum) */
-	const KEYS = ['clarte_accent', 'clarte_header_from', 'clarte_header_to', 'clarte_cat_mode', 'clarte_cat_colour', 'clarte_default_mode', 'clarte_font', 'clarte_radius'];
+	const KEYS = ['clarte_accent', 'clarte_header_from', 'clarte_header_to', 'clarte_cat_mode', 'clarte_cat_colour', 'clarte_default_mode', 'clarte_font', 'clarte_radius',
+		'clarte_bg_image', 'clarte_bg_image_dark', 'clarte_bg_mode', 'clarte_bg_position', 'clarte_bg_fixed', 'clarte_bg_overlay', 'clarte_bg_blur', 'clarte_bg_glass', 'clarte_bg_mobile',
+		'clarte_header_image', 'clarte_header_image_dark', 'clarte_header_position', 'clarte_header_overlay'];
+
+	/** Réglages qui désignent une image de images/clarte/ */
+	const IMAGE_KEYS = ['clarte_bg_image', 'clarte_bg_image_dark', 'clarte_header_image', 'clarte_header_image_dark', 'clarte_favicon', 'clarte_favicon_dark', 'clarte_touch_icon'];
+
+	/** Icône du site (1.7.0) : option du forum, hors modèles */
+	const ICON_KEYS = ['clarte_favicon', 'clarte_favicon_dark', 'clarte_touch_icon'];
+
+	/** Types d'image acceptés par emplacement (les autres : JPG, PNG, GIF, WebP) */
+	const IMAGE_TYPES = [
+		'clarte_favicon'		=> ['ico', 'png'],
+		'clarte_favicon_dark'	=> ['ico', 'png'],
+		'clarte_touch_icon'		=> ['png'],
+	];
+	const PICTURE_TYPES = ['jpg', 'png', 'gif', 'webp'];
+
+	/** Types acceptés pour un emplacement d'image */
+	public static function image_types($key)
+	{
+		return isset(self::IMAGE_TYPES[$key]) ? self::IMAGE_TYPES[$key] : self::PICTURE_TYPES;
+	}
+
+	/** Image de fond de la page : réglages qui l'accompagnent (un modèle de forum les remplace ensemble) */
+	const BG_KEYS = ['clarte_bg_image', 'clarte_bg_image_dark', 'clarte_bg_mode', 'clarte_bg_position', 'clarte_bg_fixed', 'clarte_bg_overlay', 'clarte_bg_blur', 'clarte_bg_glass', 'clarte_bg_mobile'];
+
+	/** Image de l'en-tête et ses réglages */
+	const HEADER_KEYS = ['clarte_header_image', 'clarte_header_image_dark', 'clarte_header_position', 'clarte_header_overlay'];
+
+	/** Affichage de l'image de fond, position, bornes des curseurs */
+	const BG_MODES = ['cover', 'tile', 'center'];
+	const POSITIONS = ['center', 'top', 'bottom'];
+	const RANGES = [
+		'clarte_bg_overlay'		=> [0, 80],
+		'clarte_bg_blur'		=> [0, 20],
+		'clarte_bg_glass'		=> [0, 60],
+		'clarte_header_overlay'	=> [0, 90],
+	];
 
 	/** Tous les réglages de l'extension et leurs valeurs d'origine */
 	const DEFAULTS = [
@@ -41,6 +79,26 @@ class models
 		'clarte_cat_mode'		=> 'neutral',
 		'clarte_cat_colour'		=> '#1e3a8a',
 		'clarte_index_time'		=> 'both',
+		'clarte_text_size'		=> '100',
+		'clarte_text_allow'		=> 0,
+		'clarte_bg_image'		=> '',
+		'clarte_bg_image_dark'	=> '',
+		'clarte_bg_mode'		=> 'cover',
+		'clarte_bg_position'	=> 'center',
+		'clarte_bg_fixed'		=> 1,
+		'clarte_bg_overlay'		=> 30,
+		'clarte_bg_blur'		=> 0,
+		'clarte_bg_glass'		=> 0,
+		'clarte_bg_mobile'		=> 1,
+		'clarte_header_image'	=> '',
+		'clarte_header_image_dark'	=> '',
+		'clarte_header_position'	=> 'center',
+		'clarte_header_overlay'	=> 40,
+		'clarte_bg_allow'		=> 0,
+		'clarte_acp_tabs'		=> 1,
+		'clarte_favicon'		=> '',
+		'clarte_favicon_dark'	=> '',
+		'clarte_touch_icon'		=> '',
 	];
 
 	/** @var \phpbb\config\db_text */
@@ -96,6 +154,37 @@ class models
 					$out[$key] = listener::cat_mode($value);
 				break;
 
+				case 'clarte_text_size':
+					$out[$key] = listener::text_size($value);
+				break;
+
+				case 'clarte_bg_image':
+				case 'clarte_bg_image_dark':
+				case 'clarte_header_image':
+				case 'clarte_header_image_dark':
+				case 'clarte_favicon':
+				case 'clarte_favicon_dark':
+				case 'clarte_touch_icon':
+					$name = images::valid_name($value);
+					$out[$key] = $name !== '' && in_array(substr($name, strrpos($name, '.') + 1), self::image_types($key), true) ? $name : '';
+				break;
+
+				case 'clarte_bg_mode':
+					$out[$key] = in_array($value, self::BG_MODES, true) ? $value : 'cover';
+				break;
+
+				case 'clarte_bg_position':
+				case 'clarte_header_position':
+					$out[$key] = in_array($value, self::POSITIONS, true) ? $value : 'center';
+				break;
+
+				case 'clarte_bg_overlay':
+				case 'clarte_bg_blur':
+				case 'clarte_bg_glass':
+				case 'clarte_header_overlay':
+					$out[$key] = max(self::RANGES[$key][0], min(self::RANGES[$key][1], (int) $value));
+				break;
+
 				case 'clarte_index_time':
 					$out[$key] = listener::index_time($value);
 				break;
@@ -128,7 +217,7 @@ class models
 		$name = trim(preg_replace('/[\x00-\x1F\x7F]+|\s+/u', ' ', $name));
 		$name = utf8_substr($name, 0, self::NAME_MAX);
 
-		return htmlspecialchars($name, ENT_COMPAT, 'UTF-8');
+		return utf8_htmlspecialchars($name);
 	}
 
 	/** Nom en texte brut (exports) */

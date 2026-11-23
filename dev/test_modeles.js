@@ -1,5 +1,5 @@
 // Test de bout en bout de la 1.3.0 (modèles, sauvegarde/restauration, date sur l'accueil) — node test_modeles.js <dossier de sortie>
-// Forum local 127.0.0.1:8080 (php -S), compte admin / adminpass123, reset_modeles.sh avant chaque lancement.
+// Forum local 127.0.0.1:8080 (php -S), compte admin / adminpass123, reset_forums_styles.sh avant chaque lancement.
 const { chromium } = require('playwright');
 const fs = require('fs');
 const { execSync } = require('child_process');

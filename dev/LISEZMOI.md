@@ -4,18 +4,14 @@ Utilisés pendant la mise au point de Clarté sur un forum de test local. Ils ne
 
 | Script | Rôle |
 |---|---|
-| `client.py` | petit client HTTP (connexion, formulaires, jeton) utilisé par les tests ; `PF_BASE` = adresse du forum (défaut `http://127.0.0.1:8080/`) ; `sql()` interroge la base de test |
-| `clarte.py` | test fonctionnel de la page ACP de Clarté (20 vérifications) : enregistrement, couleur invalide refusée, rien d'injecté sous prosilver, remise à zéro, habillage de l'ACP activable, journal |
-| `shoot.py` | captures Playwright du forum : `python3 shoot.py light dark d m index topic pf_user …` |
-| `shoot_acp.py` | captures de l'ACP (clair / sombre, `m` pour mobile) |
-| `shoot_perm.py` | captures de la grille des permissions avancées |
 | `test_modeles.js` | test Playwright de la 1.3.0 (35 vérifications) : modèles (enregistrer, dupliquer, modifier, exporter, appliquer, supprimer, importer, nom piégé), sauvegarde et restauration, fichiers refusés, date sur l'accueil |
-| `reset_modeles.sh` | remet le forum de test à zéro avant `test_modeles.js` |
 | `test_forums_styles.js` | test Playwright de la 1.4.0 (34 vérifications) : couleurs par forum (forum, sous-forum hérité, sujet, rédaction, catégorie, « couleurs générales »), style au choix (création, fichiers, choix dans le panneau, renommage, retrait, membre revenu à Clarté), sauvegarde/restauration des forums et styles, style supprimé ailleurs, suppression d'un modèle utilisé. Arborescence attendue : 1 catégorie { 2 forum { 3 sous-forum } } 4 catégorie { 5 forum } |
-| `reset_forums_styles.sh` | remet le forum de test à zéro (modèles, forums, styles générés) avant les tests |
-| `demo_setup.py` | forum de démonstration neutre pour les captures phpBB.com : `python3 demo_setup.py en\|fr` (part de `data/base.db`, arborescence Communauté / Clubs, titre et langue du forum) |
-| `demo_shots.js` | contenu de démonstration (2 membres, 6 sujets, 3 modèles, 2 forums colorés, un style au choix) puis captures : `node demo_shots.js en\|fr <dossier>` |
-| `demo_compose.py` | assemble `06-mobile.png` (clair + sombre) et `00-cover.png` (moitié clair, moitié sombre) |
-| `deploy.sh` | copie le style et l'extension dans le forum de test et vide le cache |
+| `reset_forums_styles.sh` | remet le forum de test à zéro (modèles, forums, styles générés, taille du texte, images de fond et dossier `images/clarte/`) avant chaque test |
+| `demo-captures.zip` | scripts des captures phpBB.com, regroupés pour garder le dépôt sous 100 fichiers (à décompresser dans `dev/`) : `demo_setup.py` (forum de démonstration neutre : `python3 demo_setup.py en\|fr`, part de `data/base.db`), `demo_shots.js` (contenu de démonstration puis captures : `node demo_shots.js en\|fr <dossier>`), `demo_compose.py` (assemble `06-mobile.png` et `00-cover.png`) |
+| `test_onglets_acp.js` | 1.8.0 : onglets des pages de l'extension dans l'ACP (16 vérifications) — au-dessus des pages sans recouvrir le menu, seulement les pages de l'extension, page en cours, collés en haut après défilement, clic, rien sur les pages de phpBB, plusieurs lignes sans défilement, mobile, option et habillage désactivés. `node test_onglets_acp.js <sortie>` |
+| `test_favicon.js` | 1.7.0 : icône du site (20 vérifications) — formats refusés par emplacement, envoi des trois icônes, balises sur Clarté, prosilver et l'ACP (avec ou sans habillage), listes filtrées, bibliothèque, sauvegarde, nom trafiqué ignoré. `node test_favicon.js <sortie> <dossier des images>` (favicon.ico, favicon-sombre.png, touch.png, paysage.jpg) |
+| `test_ordre_cache.sh` | 1.4.3 : purge le cache puis affiche deux styles dans l'ordre donné (`?style=`) et rapporte code HTTP et traces de Clarté |
+| `test_taille_texte.js` | 1.5.1 : curseur de taille (ACP, pas de 1), choix du membre dans le panneau (case « Taille du forum », aperçu), option refermée, valeur hors bornes, prosilver non touché (19 vérifications) |
+| `test_images_fond.js` | 1.6.0 : images de fond (44 vérifications) — fichiers refusés (pas une image, trop grande), envoi des trois images, doublon évité, fond / voile / flou / blocs translucides / en-tête en clair et en sombre, sombre sans image dédiée, mobile, image qui défile et motif, prosilver non touché, bibliothèque (suppression, lien falsifié), choix dans la liste, membre qui masque, modèle de forum, sauvegarde et restauration avec les images. `node test_images_fond.js <sortie> <dossier des images>` (paysage.jpg, nuit.jpg, bandeau.jpg, motif.png, faux.jpg, immense.png) |
 
-Les chemins (`S=…/scratchpad`) et les comptes (`admin`, `Camille`, `Julien`) sont ceux de l'environnement d'origine : à adapter.
+Les chemins et les comptes (`admin` / `adminpass123`) sont ceux du forum de test d'origine : à adapter. Les anciens scripts Python de la 1.0 (`client.py`, `clarte.py`, `shoot*.py`) ont été retirés en 1.6.0 : les tests Playwright les remplacent.

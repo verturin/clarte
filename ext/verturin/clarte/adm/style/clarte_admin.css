@@ -531,3 +531,11 @@ html .acp-skin ~ * {
 	#menu .menu-block .header:focus, #menu .menu-block.active .header { color: var(--accent); }
 	#menu .menu-block li:last-child { border-bottom-color: var(--line); }
 }
+
+/* Onglets des pages de l'extension en cours (1.8.0) : au-dessus du titre, petites étiquettes encadrées sur plusieurs lignes si besoin, collées en défilant */
+.clarte-acp-subnav { position: sticky; top: 0; z-index: 20; margin: 0 0 14px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface); }
+.clarte-acp-subnav ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.clarte-acp-subnav li { flex: none; margin: 0; }
+.clarte-acp-subnav a { display: block; padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--text); text-decoration: none; white-space: nowrap; }
+.clarte-acp-subnav a:hover { border-color: var(--accent-line); color: var(--accent-ink); text-decoration: none; }
+.clarte-acp-subnav .is-current a { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-ink); font-weight: 600; }
